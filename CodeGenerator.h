@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
@@ -12,6 +13,10 @@ class CodeGenerator {
     ~CodeGenerator();
     void write(string code_to_write);
     void define(string function_name);
+    void end_define();
+    void param_list(vector<string> *params);
+    void param(string param);
+    void end_param();    
     void predicate();
     void lessT();
     void gT();
@@ -28,6 +33,7 @@ class CodeGenerator {
     void display();
     
  private:
+    bool middle_param;
     ofstream cppfile;
     
 };

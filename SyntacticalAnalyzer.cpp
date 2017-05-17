@@ -15,18 +15,18 @@ using namespace std;
 
 int firstsTable[][33] =
     {
-     {0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1,  -1, -1, -1, -1},
-     {0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 2,  -1, -1, -1, -1},
-     {0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 3,  -1, -1, -1,  4},
-     {0,  5,  5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5,   6,  5, -1, -1},
-     {0,  8,  7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 9,  -1,  7, -1, -1},
-     {0, -1, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 11, -1, -1},
-     {0, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, -1, 12, -1, -1},
-     {0, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 13, -1, -1},
-     {0, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1},
-     {0, 17, 17, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 17, 18, 17, -1, -1},
-     {0, 41, -1, 21, 19, 42, 43, 20, 22, 23, 24, -1, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, -1, -1, -1, -1, -1},
-     {0, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 44, -1, 72, -1, -1}
+	{0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1,  -1, -1, -1, -1},
+	{0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 2,  -1, -1, -1, -1},
+	{0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 3,  -1, -1, -1,  4},
+	{0,  5,  5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5,   6,  5, -1, -1},
+	{0,  8,  7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 9,  -1,  7, -1, -1},
+	{0, -1, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 11, -1, -1},
+	{0, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, -1, 12, -1, -1},
+	{0, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 13, -1, -1},
+	{0, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, -1, -1},
+	{0, 17, 17, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 17, 18, 17, -1, -1},
+	{0, 41, -1, 21, 19, 42, 43, 20, 22, 23, 24, -1, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, -1, -1, -1, -1, -1},
+	{0, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 44, -1, 72, -1, -1}
     };
 
 /**
@@ -35,11 +35,11 @@ int firstsTable[][33] =
 SyntacticalAnalyzer::SyntacticalAnalyzer (char * filename)
 {
     /********************************************************************************/
-       /* This function is the default constructor of the Syntactical Analyzer
+    /* This function is the default constructor of the Syntactical Analyzer
        /* It will create the output files <testing>.lst, <testing>.p2 
        /* Then it sets our global private member token to the token that starts the
        /* program. This should be a LPAREN_T. It then calls program. 
-    /********************************************************************************/
+       /********************************************************************************/
     lex = new LexicalAnalyzer (filename);
     int fnlength = strlen (filename);
     filename[fnlength-2] = 'p';
@@ -74,10 +74,10 @@ SyntacticalAnalyzer::SyntacticalAnalyzer (char * filename)
  **/
 SyntacticalAnalyzer::~SyntacticalAnalyzer ()
 {
-  /************************************************* 
+    /************************************************* 
   /* close the files that we opened 
   /* Delete our instance of the lexical analyzer
-  ***************************************************/
+    ***************************************************/
     p2file.close();
     lstfile.close();
     cout << "Lexical errors: ";
@@ -91,9 +91,9 @@ SyntacticalAnalyzer::~SyntacticalAnalyzer ()
 int SyntacticalAnalyzer::program (){
     /********************************************************************************/
     /* This function will take in a token and find a rule. Ultimately, the token is 
-    /* a LPAREN_T and we get rule 1, and we define, upon when define returns we will
-    /* call more_defines, until we hit a lambda in there and  get to the EOF_T
-    /********************************************************************************/
+       /* a LPAREN_T and we get rule 1, and we define, upon when define returns we will
+       /* call more_defines, until we hit a lambda in there and  get to the EOF_T
+       /********************************************************************************/
     int errors = 0;
 	
     int rule = GetRule(0,token);
@@ -131,11 +131,11 @@ int SyntacticalAnalyzer::program (){
  * called when non-terminating define() is reached
  **/
 int SyntacticalAnalyzer::define(){
-  /********************************************************************
+    /********************************************************************
   /* This funciton will take in a token, and it should be LPAREN_T, 
   /* this will then start the chain reaction of function calls to build
   /* out the rest of the syntactical analyzer.
-  *********************************************************************/
+    *********************************************************************/
     int errors = 0;
     
     int rule = GetRule(1,token);
@@ -183,8 +183,8 @@ int SyntacticalAnalyzer::define(){
 	    return errors;
 	}
 	expected_vector.clear();
-	//string function_name = Lexeme() ;
-	codeGen->define("main"); // function name
+
+	codeGen->define(Lexeme()); // function name
 
 	token = NextToken();
 	errors += runNonterminal("param_list");
@@ -205,13 +205,19 @@ int SyntacticalAnalyzer::define(){
 	expected_vector.push_back(RPAREN_T);
 	errors += enforce(token, expected_vector);
 	if(token == EOF_T) {
+	    // ending define (function)
+	    codeGen->end_define();
+	    
             ending(nonTerminal, token, errors);	
 	    return errors;
 	}
 	expected_vector.clear();
-
 	token = NextToken();	//Get one additional token
     }
+
+    // ending define (function)
+    codeGen->end_define();
+    
     ending(nonTerminal, token, errors);	
     return errors;
 }
@@ -220,12 +226,12 @@ int SyntacticalAnalyzer::define(){
  *  called when non-terminating more_defines() is reached
  **/
 int SyntacticalAnalyzer::more_defines(){
-  /********************************************************************                                                                                               
+    /********************************************************************                                                                                               
   /* This funciton will take in a token,
   /* find a rule number for it, and proceed with the rule it recieves
   /* If the rule is -1, we will cycle through the tokens until we get a
   /* token we want, incrementing the errors until then
-  *********************************************************************/
+    *********************************************************************/
     int rule = GetRule(2, token);
     int errors = 0;
     string nonTerminal = "more_defines";
@@ -254,14 +260,14 @@ int SyntacticalAnalyzer::more_defines(){
  *  called when non-terminating stmt_list() is reached
  **/
 int SyntacticalAnalyzer::stmt_list(){
-  /********************************************************************                                                                                               
+    /********************************************************************                                                                                               
   /* This funciton will take in a token,
   /* find a rule number for it, and proceed with the rule it recieves
   /* If the rule is -1, we will cycle through the tokens until we get a
   /* token we want, incrementing the errors until then
-  *********************************************************************/
+    *********************************************************************/
 
-  int rule = GetRule(3, token);
+    int rule = GetRule(3, token);
     int errors = 0;
     string nonTerminal = "stmt_list";
     print(nonTerminal, token, rule);
@@ -290,13 +296,13 @@ int SyntacticalAnalyzer::stmt_list(){
  * called when non-terminating stmt_() is reached
  */
 int SyntacticalAnalyzer::stmt(){
-  /********************************************************************                                                                                               
+    /********************************************************************                                                                                               
   /* This funciton will take in a token,
   /* find a rule number for it, and proceed with the rule it recieves
   /* If the rule is -1, we will cycle through the tokens until we get a
   /* token we want, incrementing the errors until then
-  *********************************************************************/
-  int rule = GetRule(4,token);
+    *********************************************************************/
+    int rule = GetRule(4,token);
     int errors = 0;
     string nonTerminal = "stmt";
     print(nonTerminal, token, rule);
@@ -338,14 +344,14 @@ int SyntacticalAnalyzer::stmt(){
  * called when non-terminating literal() is reached
  **/
 int SyntacticalAnalyzer::literal(){
-  /********************************************************************                                                                                               
+    /********************************************************************                                                                                               
   /* This funciton will take in a token,
   /* find a rule number for it, and proceed with the rule it recieves
   /* If the rule is -1, we will cycle through the tokens until we get a
   /* token we want, incrementing the errors until then
-  *********************************************************************/
+    *********************************************************************/
 
-  int errors = 0;
+    int errors = 0;
     int rule = GetRule(5,token);
     string nonTerminal = "literal";
     print(nonTerminal, token, rule);
@@ -378,14 +384,14 @@ int SyntacticalAnalyzer::literal(){
  * called when non-terminating literal() is reached
  **/
 int SyntacticalAnalyzer::quoted_lit() {
-  /********************************************************************                                                                                               
+    /********************************************************************                                                                                               
   /* This funciton will take in a token,
   /* find a rule number for it, and proceed with the rule it recieves
   /* If the rule is -1, we will cycle through the tokens until we get a
   /* token we want, incrementing the errors until then
-  *********************************************************************/
+    *********************************************************************/
 
-  int errors = 0;
+    int errors = 0;
 	
     int rule = GetRule(6,token);
     string nonTerminal = "quoted_lit";
@@ -417,13 +423,13 @@ int SyntacticalAnalyzer::quoted_lit() {
  * called when non-terminating more_tokens() is reached
  **/
 int SyntacticalAnalyzer::more_tokens(){
-  /********************************************************************                                                                                               
+    /********************************************************************                                                                                               
   /* This funciton will take in a token,
   /* find a rule number for it, and proceed with the rule it recieves
   /* If the rule is -1, we will cycle through the tokens until we get a
   /* token we want, incrementing the errors until then
-  *********************************************************************/
-  int errors = 0;
+    *********************************************************************/
+    int errors = 0;
     int rule = GetRule(7,token);
     string nonTerminal = "more_tokens";
     print(nonTerminal, token, rule);
@@ -455,13 +461,13 @@ int SyntacticalAnalyzer::more_tokens(){
  * called when non-terminating param_list() is reached
  **/
 int SyntacticalAnalyzer::param_list(){
-  /********************************************************************                                                                                               
+    /********************************************************************                                                                                               
   /* This funciton will take in a token,
   /* find a rule number for it, and proceed with the rule it recieves
   /* If the rule is -1, we will cycle through the tokens until we get a
   /* token we want, incrementing the errors until then
-  *********************************************************************/
-  int errors = 0;
+    *********************************************************************/
+    int errors = 0;
     int rule = GetRule(8,token);
     string nonTerminal = "param_list";
     print(nonTerminal, token, rule);
@@ -478,10 +484,12 @@ int SyntacticalAnalyzer::param_list(){
 	rule = GetRule(8, token);
     }
     if (rule == 15) {
+	codeGen->param(Lexeme());
 	token = NextToken();
 	errors += runNonterminal("param_list");
-
+	
     } else if (rule == 16) {
+	codeGen->end_param();
 	//Do nothing for lambda.
     }
     ending(nonTerminal, token, errors);
@@ -497,7 +505,7 @@ int SyntacticalAnalyzer::else_part(){
   /* find a rule number for it, and proceed with the rule it recieves
   /* If the rule is -1, we will cycle through the tokens until we get a
   /* token we want, incrementing the errors until then
-  *********************************************************************/
+    *********************************************************************/
 
     int errors = 0;
     int rule = GetRule(9, token);
@@ -529,13 +537,13 @@ int SyntacticalAnalyzer::else_part(){
  * called when non-terminating action() is reached
  **/
 int SyntacticalAnalyzer::action(){
-  /********************************************************************                                                                                               
+    /********************************************************************                                                                                               
   /* This funciton will take in a token,
   /* find a rule number for it, and proceed with the rule it recieves
   /* If the rule is -1, we will cycle through the tokens until we get a
   /* token we want, incrementing the errors until then
-  *********************************************************************/
-  int errors = 0;
+    *********************************************************************/
+    int errors = 0;
     int rule = GetRule(10, token);
     string nonTerminal = "action";
     print(nonTerminal, token, rule);
@@ -562,9 +570,9 @@ int SyntacticalAnalyzer::action(){
 	errors += runNonterminal("else_part");
 	break;
     case 20:
-      token = NextToken();
-      errors += runNonterminal("stmt");
-      break;
+	token = NextToken();
+	errors += runNonterminal("stmt");
+	break;
     case 21:
 	token = NextToken();
 	errors += runNonterminal("stmt");
@@ -608,14 +616,14 @@ int SyntacticalAnalyzer::action(){
  * called when non-terminating any_other_token() is reached
  **/
 int SyntacticalAnalyzer::any_other_token(){
-  /********************************************************************                                                                                               
+    /********************************************************************                                                                                               
   /* This funciton will take in a token,
   /* find a rule number for it, and proceed with the rule it recieves
   /* If the rule is -1, we will cycle through the tokens until we get a
   /* token we want, incrementing the errors until then
-  *********************************************************************/
+    *********************************************************************/
 
-  int errors = 0;
+    int errors = 0;
     int rule = GetRule(11, token);
     string nonTerminal = "any_other_token";
     print(nonTerminal, token, rule);
