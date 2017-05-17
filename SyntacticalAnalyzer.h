@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include "LexicalAnalyzer.h"
+#include "CodeGenerator.h"
 #include <vector>
 
 using namespace std;
