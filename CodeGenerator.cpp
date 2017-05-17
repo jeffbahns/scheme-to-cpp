@@ -55,24 +55,24 @@ void CodeGenerator::predicate()
     
 }
 
-void CodeGenerator::lessT()
+void CodeGenerator::lessT(string first, string second)
 {
-    
+    cppfile << first << " < " << second << endl;
 }
 
-void CodeGenerator::gT()
+void CodeGenerator::gT(string first, string second)
 {
-    
+    cppfile << first << " > " << second << endl;
 }
 
-void CodeGenerator::equal()
+void CodeGenerator::equal(string first, string second)
 {
-    
+    cppfile << first << " == " << second << endl;
 }
 
-void CodeGenerator::notEqual()
+void CodeGenerator::notEqual(string first, string second)
 {
-    
+    cppfile << first << " != " << second << endl;
 }
 
 void CodeGenerator::plus()
