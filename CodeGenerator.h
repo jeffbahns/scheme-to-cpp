@@ -18,10 +18,10 @@ class CodeGenerator {
     void param(string param);
     void end_param();    
     void predicate();
-    void lessT();
-    void gT();
-    void equal();
-    void notEqual();
+    void lessT(string first, string second);
+    void gT(string first, string second);
+    void equal(string first, string second);
+    void notEqual(string first, string second);
     void plus();
     void minus();
     void mult();
