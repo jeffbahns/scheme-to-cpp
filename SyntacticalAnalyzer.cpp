@@ -1,6 +1,6 @@
 /********************************************************************************/
 /* Project: 3, Syntactical Analyzer 	      					*/
-/* Author: Jeff Bahns, Tyler Coonce, Daneiel Hartman		    		*/
+/* Author: Jeff Bahns, Tyler Coonce, Daniel Hartman		    		*/
 /* Date: 5/18/2017							    	*/
 /* Description:			*/
 /********************************************************************************/
