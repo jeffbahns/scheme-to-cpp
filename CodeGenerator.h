@@ -10,6 +10,22 @@ class CodeGenerator {
  public:
     CodeGenerator();
     ~CodeGenerator();
+    void Define(...);
+    void Predicate(...);
+    void LT(...);
+    void GT(...);
+    void Equal(...);
+    void NotEqual(...);
+    void Plus(...);
+    void Minus(...);
+    void Mult(...);
+    void Div(...);
+    void Ident(...);
+    void Cons(...);
+    void Listop(...);
+    void If(...);
+    void Display();
+    
  private:
     
     
