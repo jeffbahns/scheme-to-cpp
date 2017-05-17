@@ -49,3 +49,73 @@ void CodeGenerator::end_param() {
     write(") {\n");
     middle_param = false;
 }
+
+void CodeGenerator::predicate()
+{
+    
+}
+
+void CodeGenerator::lessT()
+{
+    
+}
+
+void CodeGenerator::gT()
+{
+    
+}
+
+void CodeGenerator::equal()
+{
+    
+}
+
+void CodeGenerator::notEqual()
+{
+    
+}
+
+void CodeGenerator::plus()
+{
+    
+}
+
+void CodeGenerator::minus()
+{
+    
+}
+
+void CodeGenerator::mult()
+{
+    
+}
+
+void CodeGenerator::div()
+{
+    
+}
+
+void CodeGenerator::ident()
+{
+    
+}
+
+void CodeGenerator::cons()
+{
+    
+}
+
+void CodeGenerator::listop()
+{
+    
+}
+
+void CodeGenerator::ifStatement()
+{
+    
+}
+
+void CodeGenerator::display()
+{
+    
+}
