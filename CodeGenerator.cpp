@@ -23,3 +23,88 @@ void CodeGenerator::define(string function_name) {
     cppfile << " " << endl;
 }
 
+void CodeGenerator::newline() {
+  cppfile << "cout<<endl;"<<endl;
+}
+
+void CodeGenerator::display(string toDisplay) {
+  cppfile<<"cout<<"<<toDisplay<<";"<<endl;
+}
+
+string CodeGenerator::plus(vector<string> operands) {
+  string writable = "";
+  if(!operands.empty())
+    writable+= "("+operands[0];
+  for(int i=1;i<operands.size();i++)
+    {
+      writable+=" + "+operands[i];
+    }
+  if(!operands.empty())
+    writable+= ");";
+  cppfile<<writable<<endl;
+  return writable;
+}
+
+string CodeGenerator::minus(vector<string> operands) {
+  string writable = "";
+  if(!operands.empty())
+    writable+= "("+operands[0];
+  for(int i=1;i<operands.size();i++)
+    {
+      writable+=" - "+operands[i];
+    }
+  if(!operands.empty())
+    writable+= ");";
+  cppfile<<writable<<endl;
+  return writable;
+}
+
+string CodeGenerator::mult(vector<string> operands) {
+  string writable = "";
+  if(!operands.empty())
+    writable+= "("+operands[0];
+  for(int i=1;i<operands.size();i++)
+    {
+      writable+=" * "+operands[i];
+    }
+  if(!operands.empty())
+    writable+= ");";
+  cppfile<<writable<<endl;
+  return writable;
+}
+
+string CodeGenerator::div(vector<string> operands) {
+  string writable = "";
+  if(!operands.empty())
+    writable+= "("+operands[0];
+  for(int i=1;i<operands.size();i++)
+    {
+      writable+=" / "+operands[i];
+    }
+  if(!operands.empty())
+    writable+= ");";
+  cppfile<<writable<<endl;
+  return writable;
+}
+
+void CodeGenerator::cons(string op1, string op2) {
+  cppfile<<"cons(" << op1 << "," <<op2 <<");"<<endl;
+}
+
+void CodeGenerator::listop(string listop, string list) {
+  cppfile<<"listop(" <<listop <<", "<<list<<");"<<endl;
+}
+
+void CodeGenerator::ifStatement(string condition, vector<string> isTrue,
+				vector<string> isFalse) {
+  cppfile<<"if( " <<condition <<") { \n";
+  for(int i=0;i<isTrue.size();i++) {
+    cppfile<<"cout<<" <<isTrue[i]<<";\n";
+  }
+  cppfile<<" } \n else { \n";
+  for(int i=0;i<isFalse.size();i++)
+    {
+      cppfile<<"cout<<" <<isFalse[i]<<";\n";
+    }
+  cppfile<<"}"<<endl;
+}

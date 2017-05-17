@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
@@ -10,22 +11,32 @@ class CodeGenerator {
  public:
     CodeGenerator(char * filename);
     ~CodeGenerator();
+    
     void write(string code_to_write);
+    
     void define(string function_name);
+
+    //comparisons
     void predicate();
     void lessT();
-    void gT();
+    void greaterT();
+    void ltE();
+    void gtE();
     void equal();
     void notEqual();
-    void plus();
-    void minus();
-    void mult();
-    void div();
+
+    //math
+    string plus(vector<string>);
+    string minus(vector<string>);
+    string mult(vector<string>);
+    string div(vector<string>);
+    
     void ident();
-    void cons();
-    void listop();
-    void ifStatement();
-    void display();
+    void cons(string, string);
+    void listop(string,string);
+    void ifStatement(string, vector<string>, vector<string>);
+    void display(string);
+    void newline();
     
  private:
     ofstream cppfile;
