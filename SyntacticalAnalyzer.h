@@ -16,6 +16,8 @@ class SyntacticalAnalyzer
 	~SyntacticalAnalyzer ();
     private:
 	LexicalAnalyzer * lex;
+	CodeGenerator * codeGen;
+	
 	ofstream p2file;
 	ofstream lstfile;
 	token_type token;

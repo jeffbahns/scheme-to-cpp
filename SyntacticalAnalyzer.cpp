@@ -57,6 +57,15 @@ SyntacticalAnalyzer::SyntacticalAnalyzer (char * filename)
     lstfile << lstOutput<< endl;
     lstfile << "Errors found during syntactical analysis: " << errors << endl;
     lstOutput = "";
+
+    // generating filename for cpp file/code generator
+    filename[fnlength-2] = 'c';
+    filename[fnlength-1] = 'p';
+    std::string cppFilenameStr(filename); // string version of filename
+    lstFilename += 'p';
+    char * cppFilename = new char[cppFilenameStr.length() + 1]; // char* version of filename
+    std::strcpy(cppFilename, cppFilenameStr.c_str());
+    codeGen = new CodeGenerator (cppFilename);
 }
 
 /******
@@ -72,6 +81,7 @@ SyntacticalAnalyzer::~SyntacticalAnalyzer ()
     lstfile.close();
     cout << "Lexical errors: ";
     delete lex;
+    delete codeGen;
 }
 
 /**

@@ -1,5 +1,5 @@
 P3.out : Project3.o SetLimits.o LexicalAnalyzer.o SyntacticalAnalyzer.o CodeGenerator.o
-	g++ -g -o P3.out Project3.o SetLimits.o LexicalAnalyzer.o SyntacticalAnalyzer.o 
+	g++ -g -o P3.out Project3.o SetLimits.o LexicalAnalyzer.o SyntacticalAnalyzer.o  CodeGenerator.o
 
 Project3.o : Project3.cpp SetLimits.h SyntacticalAnalyzer.h
 	g++ -g -c Project3.cpp
