@@ -20,7 +20,7 @@ clean :
 	rm *.o P3.out *.gch *.lst *.dbg *.p2 *.p1 *# *~
 
 run:
-	./P3.out TeamM1P3.ss
+	./P3.out t.ss
 submit : Project3.cpp LexicalAnalyzer.h LexicalAnalyzer.save SyntacticalAnalyzer.h SyntacticalAnalyzer.cpp RuleMonitor.cpp RuleMonitor.h makefile README.txt # TODO: make sure this works
 	rm -rf TeamMP3
 	mkdir TeamMP3

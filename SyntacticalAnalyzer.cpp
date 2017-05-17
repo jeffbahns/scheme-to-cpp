@@ -51,13 +51,6 @@ SyntacticalAnalyzer::SyntacticalAnalyzer (char * filename)
     std::string lstFilename(filename);
     lstFilename += 't';
     lstfile.open (lstFilename.c_str(), std::ofstream::out | std::ofstream::app);
-
-    token = NextToken();
-    int errors = program ();
-    lstfile << lstOutput<< endl;
-    lstfile << "Errors found during syntactical analysis: " << errors << endl;
-    lstOutput = "";
-
     // generating filename for cpp file/code generator
     filename[fnlength-2] = 'c';
     filename[fnlength-1] = 'p';
@@ -66,6 +59,14 @@ SyntacticalAnalyzer::SyntacticalAnalyzer (char * filename)
     char * cppFilename = new char[cppFilenameStr.length() + 1]; // char* version of filename
     std::strcpy(cppFilename, cppFilenameStr.c_str());
     codeGen = new CodeGenerator (cppFilename);
+    
+    token = NextToken();
+    int errors = program ();
+    lstfile << lstOutput<< endl;
+    lstfile << "Errors found during syntactical analysis: " << errors << endl;
+    lstOutput = "";
+
+
 }
 
 /******
@@ -664,7 +665,6 @@ void SyntacticalAnalyzer::print(string nonTerm, token_type token, int rule){
     p2file << "Starting <" << nonTerm << ">. Current token = " << lex->GetTokenName(token) << endl;
     p2file << "Using rule " << rule << endl;
     lex->debug << "\t<" << nonTerm << "> started, using rule " << rule << "\n";
-  
 }
 
 
