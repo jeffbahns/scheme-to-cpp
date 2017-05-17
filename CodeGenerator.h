@@ -11,21 +11,22 @@ class CodeGenerator {
  public:
     CodeGenerator(char * filename);
     ~CodeGenerator();
-    void Define(...);
-    void Predicate(...);
-    void LT(...);
-    void GT(...);
-    void Equal(...);
-    void NotEqual(...);
-    void Plus(...);
-    void Minus(...);
-    void Mult(...);
-    void Div(...);
-    void Ident(...);
-    void Cons(...);
-    void Listop(...);
-    void If(...);
-    void Display();
+    void write(string code_to_write);
+    void define(string function_name);
+    void predicate(...);
+    void lessT(...);
+    void gT(...);
+    void equal(...);
+    void notEqual(...);
+    void plus(...);
+    void minus(...);
+    void mult(...);
+    void div(...);
+    void ident(...);
+    void cons(...);
+    void listop(...);
+    void ifStatement(...);
+    void display();
     
  private:
     ofstream cppfile;

@@ -62,7 +62,7 @@ SyntacticalAnalyzer::SyntacticalAnalyzer (char * filename)
     filename[fnlength-2] = 'c';
     filename[fnlength-1] = 'p';
     std::string cppFilenameStr(filename); // string version of filename
-    lstFilename += 'p';
+    cppFilenameStr += 'p';
     char * cppFilename = new char[cppFilenameStr.length() + 1]; // char* version of filename
     std::strcpy(cppFilename, cppFilenameStr.c_str());
     codeGen = new CodeGenerator (cppFilename);
@@ -99,6 +99,7 @@ int SyntacticalAnalyzer::program (){
     string nonTerminal = "program";
     print(nonTerminal, token, rule);
 
+
     if(rule == -1){
 	vector<int>expected_vector;
 	expected_vector.push_back(LPAREN_T);
@@ -107,7 +108,7 @@ int SyntacticalAnalyzer::program (){
             ending(nonTerminal, token, errors);
             return errors;
         }
-        rule = GetRule(0,token);	  
+        rule = GetRule(0,token);
     }
 
     if (rule == 1){
@@ -135,7 +136,7 @@ int SyntacticalAnalyzer::define(){
   /* out the rest of the syntactical analyzer.
   *********************************************************************/
     int errors = 0;
-	
+    
     int rule = GetRule(1,token);
     string nonTerminal = "define";
     print(nonTerminal, token, rule);
@@ -173,7 +174,6 @@ int SyntacticalAnalyzer::define(){
 	    return errors;
 	}
 	expected_vector.clear();
-
 	token = NextToken();
 	expected_vector.push_back(IDENT_T);
 	errors += enforce(token, expected_vector);
@@ -182,6 +182,8 @@ int SyntacticalAnalyzer::define(){
 	    return errors;
 	}
 	expected_vector.clear();
+	//string function_name = Lexeme() ;
+	codeGen->define("main"); // function name
 
 	token = NextToken();
 	errors += runNonterminal("param_list");
@@ -741,6 +743,13 @@ int SyntacticalAnalyzer::enforce(token_type &token, vector<int>expected_vector) 
 token_type SyntacticalAnalyzer::NextToken(){
     token_type t = lex->GetToken();
     return t;
+}
+
+/*
+ *
+ **/
+string SyntacticalAnalyzer::Lexeme() {
+    return lex->GetLexeme();
 }
 
 
