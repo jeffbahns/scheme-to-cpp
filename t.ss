@@ -37,10 +37,36 @@
   )
 
 (define (add_test)
-  (+ 5 6)
+  (+ (+ 10 20) (+ 7 8))
   )
 
+(define (arith_test)
+  (+ (+ (*2 2) 4) (*3 5))
+  )
+
+(define (subdiv_test)
+  (- 5 4)
+  )
+
+(define (comparative_test)
+  (if (>= 5 4)
+      (if (<= 1 2)
+	  (< 5 4)
+	  (> 1 2)
+	  )
+      (* 1 2)
+      )
+  )
+
+(define (logical_test x y z)
+  (if (and (null? x) (null? y))
+      (or  (null? x) (and (null? y) (null? z)))
+      1
+      )
+  )
 (define (main)
   (display (not_test 5))
   (display (add_test))
+  (display (arith_test))
+  (display (subdiv_test))
   )
