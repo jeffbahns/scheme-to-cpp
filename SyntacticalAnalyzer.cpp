@@ -29,6 +29,10 @@ int firstsTable[][33] =
 	{0, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 44, -1, 72, -1, -1}
     };
 
+
+// code gen flags
+bool inside_action = false;
+
 /**
  * constructor, takes filename as arg
  **/
@@ -62,11 +66,10 @@ SyntacticalAnalyzer::SyntacticalAnalyzer (char * filename)
     
     token = NextToken();
     int errors = program ();
+    
     lstfile << lstOutput<< endl;
     lstfile << "Errors found during syntactical analysis: " << errors << endl;
     lstOutput = "";
-
-
 }
 
 /******
@@ -320,6 +323,7 @@ int SyntacticalAnalyzer::stmt(){
     if (rule == 7){
 	errors += runNonterminal("literal");
     } else if (rule == 8){
+	codeGen->stmt_ident(Lexeme(), !inside_action); // reporting raw ident stmt to code gen (i think)
 	token = NextToken();	//Get one additional token
     } else if (rule == 9){
 	token = NextToken();
@@ -364,10 +368,10 @@ int SyntacticalAnalyzer::literal(){
 	    ending(nonTerminal, token, errors);
 	    return errors;
 	}
-
 	rule = GetRule(5,token);
     }
     if (rule == 10) {
+	codeGen->num_literal(Lexeme(), !inside_action); // reporting literal of type numlit
 	token = NextToken();	//Get one additional token
     } else if (rule == 11) {
 	token = NextToken();
@@ -410,8 +414,8 @@ int SyntacticalAnalyzer::quoted_lit() {
 	rule = GetRule(6, token);
     }
     if (rule == 12) {
+	codeGen->quoted_literal(Lexeme(), !inside_action);
 	errors += runNonterminal("any_other_token");
-
     }
 
     ending("quoted_lit", token, errors);
@@ -637,7 +641,6 @@ int SyntacticalAnalyzer::any_other_token(){
 	    ending(nonTerminal, token, errors);
 	    return errors;
 	}
-
 	rule = GetRule(11, token);
     }
     if (rule == 44) {
@@ -645,6 +648,7 @@ int SyntacticalAnalyzer::any_other_token(){
 	errors += runNonterminal("more_tokens");
 	token = NextToken();	//Get one additional lexeme
     } else if (rule >= 45 && rule <= 72) {
+	
 	token = NextToken();	//Get one additional lexeme
     }
     ending(nonTerminal, token, errors);

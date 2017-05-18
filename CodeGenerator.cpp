@@ -34,8 +34,10 @@ void CodeGenerator::define(string function_name) {
 void CodeGenerator::end_define() {
     if (main_function) {
 	main_function = false;
+    } else {
+	write(tab + "return ret;\n");	
     }
-    write(tab + "return ret;\n");
+
     write("}\n\n");
 }
 
@@ -51,11 +53,43 @@ void CodeGenerator::param(string param) {
 void CodeGenerator::end_param() {
     write(") {\n");
     if (main_function) {
-	write(tab + "int ret;\n");
+	write(tab + "int ret;\n"); // ? don't know if we do this for main..
     } else {
 	write(tab + "Object ret;\n");	
     }
     middle_param = false;
+}
+
+void CodeGenerator::stmt_ident(string ident, bool returned) {
+    if (returned) {
+	write(tab + "ret = " + ident + ";\n");	
+    } else {
+	write(ident);	
+    }
+}
+
+void CodeGenerator::num_literal(string lit, bool returned) {
+    if (returned) {
+	if (main_function) {
+	    write(tab + "ret = " + lit + ";\n");
+	} else {
+	    write(tab + "ret = Object(" + lit + ");\n");
+	}
+    } else {
+	write("Object(" + lit + ")");
+    }
+}
+
+void CodeGenerator::quoted_literal(string lit, bool returned) {
+    if (returned) {
+	if (main_function) {
+	    write(tab + "ret = " + lit + ";\n");
+	} else {
+	    write(tab + "ret = Object(\"" + lit + "\");\n");
+	}
+    } else {
+	write("Object(\"" + lit + "\")");
+    }
 }
 
 void CodeGenerator::predicate()

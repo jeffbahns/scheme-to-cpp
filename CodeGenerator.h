@@ -16,8 +16,10 @@ class CodeGenerator {
     void end_define();
     void param(string param);
     void end_param();    
-    void literal();
-
+    void stmt_ident(string ident, bool returned); // rule 8
+    void num_literal(string lit, bool returned); // rule 7->10
+    void quoted_literal(string lit, bool returned); // rule 7->11 
+    
     void predicate();
     void lessT(string first, string second);
     void gT(string first, string second);
