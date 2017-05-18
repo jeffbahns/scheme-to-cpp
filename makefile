@@ -18,9 +18,9 @@ CodeGenerator.o: CodeGenerator.cpp CodeGenerator.h
 
 clean : 
 	rm *.o P3.out *.gch *.lst *.dbg *.p2 *.p1 *# *~
-
 run:
 	./P3.out t.ss
+	g++ t.cpp
 submit : Project3.cpp LexicalAnalyzer.h LexicalAnalyzer.save SyntacticalAnalyzer.h SyntacticalAnalyzer.cpp RuleMonitor.cpp RuleMonitor.h makefile README.txt # TODO: make sure this works
 	rm -rf TeamMP3
 	mkdir TeamMP3
