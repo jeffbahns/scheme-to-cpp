@@ -1,7 +1,7 @@
-(define (main fuck shit dumbb)
+(define (fuck one two three)
   0
   )
 
-(define (fuck one two three)
+(define (main fuck shit)
   0
   )

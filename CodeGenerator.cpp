@@ -1,10 +1,14 @@
 #include "CodeGenerator.h"
 
+const string tab = "    "; // const used to quickly tab 
+
 CodeGenerator::CodeGenerator(char * filename) {
     middle_param = false;
-
+    main_function = false;
+    
     cppfile.open(filename, std::ofstream::out);
     cout << "opening " << filename << endl;
+    write("#include \"Object.cpp\"\n");
     write("#include <iostream>\n");
     write("using namespace std;\n\n");
 }
@@ -20,6 +24,7 @@ void CodeGenerator::write(string code_to_write) {
 void CodeGenerator::define(string function_name) {
     if (function_name == "main") {
 	write("int ");
+	main_function = true;
     } else {
 	write("Object ");
     }
@@ -27,17 +32,15 @@ void CodeGenerator::define(string function_name) {
 }
 
 void CodeGenerator::end_define() {
+    if (main_function) {
+	main_function = false;
+    }
+    write(tab + "return ret;\n");
     write("}\n\n");
 }
 
-void CodeGenerator::param_list(vector<string> *params) {
-    for (int i = 0; i < params->size(); i++) {
-	write(params->at(i) + " ");
-    }
-}
-
 void CodeGenerator::param(string param) {
-    if (middle_param) { // if in middle of param list use ',' to separate params
+    if (middle_param) {
 	write(", ");
     } else {
 	middle_param = true;
@@ -47,6 +50,11 @@ void CodeGenerator::param(string param) {
 
 void CodeGenerator::end_param() {
     write(") {\n");
+    if (main_function) {
+	write(tab + "int ret;\n");
+    } else {
+	write(tab + "Object ret;\n");	
+    }
     middle_param = false;
 }
 

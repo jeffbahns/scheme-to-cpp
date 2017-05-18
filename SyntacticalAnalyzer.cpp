@@ -318,13 +318,13 @@ int SyntacticalAnalyzer::stmt(){
 	rule = GetRule(4,token);
     }
     if (rule == 7){
-	errors += runNonterminal("literal");	
+	errors += runNonterminal("literal");
     } else if (rule == 8){
 	token = NextToken();	//Get one additional token
     } else if (rule == 9){
 	token = NextToken();
 	errors += runNonterminal("action");
-		
+	
 	vector<int>expected_vector;
 	expected_vector.push_back(RPAREN_T);
 	errors += enforce(token, expected_vector);
