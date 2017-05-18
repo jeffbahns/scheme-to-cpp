@@ -31,49 +31,26 @@ class CodeGenerator {
     void end_define();
     void param(string param);
     void end_param();    
-    void stmt_ident(string ident, bool returned); // rule 8
-    void num_literal(string lit, bool returned); // rule 7->10
-    void quoted_literal(string lit, bool returned); // rule 7->11 
+    void stmt_ident(string ident, bool return_val); // rule 8
+    void num_literal(string lit, bool return_val); // rule 7->10
+    void quoted_literal(string lit, bool return_val); // rule 7->11 
 
     void if_begin();
     void if_cond_end();
 
+
+
+    /* ACTIONS, grouped by similar structure*/
     void if_else_part();
     void if_else_part_end();
-
-    /* ACTIONS*/
-
+    /* help do general stuff */ 
+    void action_begin(string to_write, bool return_val); // rules 23->31, 41, 43
+    void action_end(bool return_val, bool is_nested);
     /**/
-    void action_begin(bool returned);
-    void action_end(bool returned, bool nested);
-    
-    void listop_begin(string listop, bool returned);
-    void listop(string operand);
-    void listop_end(bool returned, bool nested);
-
-    void cons_begin(bool returned);
-    void cons(string operand);
-    void cons_end(bool returned, bool nested);
-
-    void logical(string op, bool returned); // and / or
-    void logical_end(bool returned, bool nested);
-    /**/
-    void predicate(string predicate, bool returned); // rules 25-31
-    /**/
-    
-    void plus();
-    void minus();
-    void mult();
-    void div();
-    void ident();
-    void cons();
-    void ifStatement();
-    void cons(string, string);
-    void ifStatement(string, vector<string>, vector<string>);
-    void display();
+    void display(); // rule 42
     void endDisplay();
-    void newline();
-    
+    /**/
+
  private:
     bool middle_param; // if in middle of param list use ',' to separate params
     bool main_function; // to check if we are in middle of generating main file, has differnent return type pretty much

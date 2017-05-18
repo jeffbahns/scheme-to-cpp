@@ -1,20 +1,20 @@
 P3.out : Project3.o SetLimits.o LexicalAnalyzer.o SyntacticalAnalyzer.o CodeGenerator.o
-	g++ -g -o P3.out Project3.o SetLimits.o LexicalAnalyzer.o SyntacticalAnalyzer.o  CodeGenerator.o
+	g++ -std=c++11 -g -o P3.out Project3.o SetLimits.o LexicalAnalyzer.o SyntacticalAnalyzer.o  CodeGenerator.o
 
 Project3.o : Project3.cpp SetLimits.h SyntacticalAnalyzer.h
-	g++ -g -c Project3.cpp
+	g++ -std=c++11 -g -c Project3.cpp
 
 SetLimits.o : SetLimits.cpp SetLimits.h
-	g++ -g -c SetLimits.cpp
+	g++ -std=c++11 -g -c SetLimits.cpp
 
 LexicalAnalyzer.o : LexicalAnalyzer.save
 	cp LexicalAnalyzer.save LexicalAnalyzer.o
 
 SyntacticalAnalyzer.o : SyntacticalAnalyzer.cpp SyntacticalAnalyzer.h LexicalAnalyzer.h CodeGenerator.h
-	g++ -g -c SyntacticalAnalyzer.cpp
+	g++ -std=c++11 -g -c SyntacticalAnalyzer.cpp
 
 CodeGenerator.o: CodeGenerator.cpp CodeGenerator.h
-	g++ -g -c CodeGenerator.cpp
+	g++ -std=c++11 -g -c CodeGenerator.cpp
 
 clean : 
 	rm *.o P3.out *.gch *.lst *.dbg *.p2 *.p1 *# *~ a.out

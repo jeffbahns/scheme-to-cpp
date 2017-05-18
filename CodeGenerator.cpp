@@ -1,7 +1,7 @@
 #include "CodeGenerator.h"
 
 const string tab = "    "; // const used to quickly tab 
-
+int tab_level = 0;
 CodeGenerator::CodeGenerator(char * filename) {
     middle_param = false;
     main_function = false;
@@ -23,7 +23,7 @@ void CodeGenerator::write(string code_to_write) {
 
 void CodeGenerator::define(string function_name) {
     if (function_name == "main") {
-	write("int ");
+	//write("int ");
 	main_function = true;
     } else {
 	write("Object ");
@@ -33,6 +33,7 @@ void CodeGenerator::define(string function_name) {
 
 void CodeGenerator::end_define() {
     if (main_function) {
+	write("return 0;\n");
 	main_function = false;
     } else {
 	write("return ret;\n");	
@@ -52,25 +53,25 @@ void CodeGenerator::param(string param) {
 void CodeGenerator::end_param() {
     write(") {\n");
     if (main_function) {
-	write("int ret;\n"); // ? don't know if we do this for main..
+	//write("int ret;\n"); // ? don't know if we do this for main..
     } else {
 	write("Object ret;\n");	
     }
     middle_param = false;
 }
 
-void CodeGenerator::stmt_ident(string ident, bool returned) {
-    if (returned) {
+void CodeGenerator::stmt_ident(string ident, bool return_val) {
+    if (return_val) {
 	write("ret = " + ident + ";\n");	
     } else {
 	write(ident);	
     }
 }
 
-void CodeGenerator::num_literal(string lit, bool returned) {
-    if (returned) {
+void CodeGenerator::num_literal(string lit, bool return_val) {
+    if (return_val) {
 	if (main_function) {
-	    write("ret = " + lit + ";\n");
+	    //write("ret = " + lit + ";\n");
 	} else {
 	    write("ret = Object(" + lit + ");\n");
 	}
@@ -79,10 +80,10 @@ void CodeGenerator::num_literal(string lit, bool returned) {
     }
 }
 
-void CodeGenerator::quoted_literal(string lit, bool returned) {
-    if (returned) {
+void CodeGenerator::quoted_literal(string lit, bool return_val) {
+    if (return_val) {
 	if (main_function) {
-	    write("ret = " + lit + ";\n");
+	    //write("ret = " + lit + ";\n");
 	} else {
 	    write("ret = Object(\"" + lit + "\");\n");
 	}
@@ -108,50 +109,27 @@ void CodeGenerator::if_else_part_end() {
 }
 
 /* GENERAL ACTIONS (not including "if") */
-
-void CodeGenerator::action_begin(bool returned) {
-    if (returned) {
+void CodeGenerator::action_begin(string to_write, bool return_val) {
+    if (return_val) {
 	write("ret = ");
     }
+    write(to_write);
 }
 
-void CodeGenerator::action_end(bool returned, bool nested) {
+void CodeGenerator::action_end(bool return_val, bool is_nested) {
     write(")");
-    if (returned && !nested) {
+    if (return_val && !is_nested) {
 	write(";\n");
     } 
 }
 
-void CodeGenerator::listop_begin(string listop, bool returned) {
-    action_begin(returned);
-    write("listop(\"" + listop + "\", ");
+// 44
+void CodeGenerator::display() {
+    write("cout << ");
 }
 
-void CodeGenerator::listop_end(bool returned, bool nested) {
-    action_end(returned, nested);
-}
-
-void CodeGenerator::cons_begin(bool returned) {
-    action_begin(returned);
-    write("cons(");
-}
-
-void CodeGenerator::cons_end(bool returned, bool nested) {
-    action_end(returned, nested);
-}
-
-void CodeGenerator::logical(string op, bool returned) {
-    action_begin(returned);
-    write("(");
-}
-
-void CodeGenerator::logical_end(bool returned, bool nested) {
-    action_end(returned, nested);
-}
-
-void CodeGenerator::predicate(string predicate, bool returned) {
-    action_begin(returned);
-    write(predicate.substr(0,predicate.length()-1) + "p(");
+void CodeGenerator::endDisplay() {
+    write(" << endl;\n");
 }
 
 void CodeGenerator::lessT(string first, string second)
@@ -164,17 +142,6 @@ void CodeGenerator::gT(string first, string second)
     cppfile << "(" << first << " > " << second << ")" << endl;
 }
 
-void CodeGenerator::newline() {
-  cppfile << "cout<<endl;"<<endl;
-}
-
-void CodeGenerator::display() {
-    write("cout << ");
-}
-
-void CodeGenerator::endDisplay() {
-    write(" << endl;\n");
-}
 
 string CodeGenerator::plus(vector<string> operands) {
   string writable = "";
@@ -231,38 +198,10 @@ string CodeGenerator::div(vector<string> operands) {
   cppfile<<writable<<endl;
   return writable;
 }
-/*
-void CodeGenerator::cons(string op1, string op2) {
-  cppfile<<"cons(" << op1 << "," <<op2 <<");"<<endl;
-}
-*/
-
-
-void CodeGenerator::ifStatement(string condition, vector<string> isTrue,
-				vector<string> isFalse) {
-  cppfile<<"if( " <<condition <<") { \n";
-  for(int i=0;i<isTrue.size();i++) {
-    cppfile<<"cout<<" <<isTrue[i]<<";\n";
-  }
-  cppfile<<" } \n else { \n";
-  for(int i=0;i<isFalse.size();i++)
-    {
-      cppfile<<"cout<<" <<isFalse[i]<<";\n";
-    }
-  cppfile<<"}"<<endl;
-}
 
 void CodeGenerator::equal(string first, string second)
 {
     cppfile << "(" << first << " == " << second << ")" << endl;
 }
 
-void CodeGenerator::notEqual(string first, string second)
-{
-    cppfile << "(" << first << " != " << second << ")" << endl;
-}
 
-void CodeGenerator::ident()
-{
-    
-}

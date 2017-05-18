@@ -9,10 +9,15 @@
 #include <iomanip>
 #include <cstring>
 #include <fstream>
+#include <stack>
+#include <tuple>
 #include "SyntacticalAnalyzer.h"
 
 using namespace std;
 
+string operators[11] = {"&&", "||", "+", "-", "/", "*", "==", ">", "<", ">=", "<="};
+stack<tuple<string, bool>> _OP_STACK;
+bool _OP_ready();
 int firstsTable[][33] =
     {
 	{0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1,  -1, -1, -1, -1},
@@ -30,11 +35,11 @@ int firstsTable[][33] =
     };
 
 
-// code gen flags
-bool inside_action = false;
-bool nested = false;
-string _OP_;
-
+// FLAGS
+bool _RV = true; // return val? (should i put a "ret = " in front of next statement)
+bool _NEST = false; // nested? (do i put a colon after whatever statement i finish next, or is it nested in something else)
+bool _OP = false; // is there an operator to use?
+string _OPERATOR; // what is that operator?
 /**
  * constructor, takes filename as arg
  **/
@@ -271,7 +276,8 @@ int SyntacticalAnalyzer::stmt_list(){
   /* If the rule is -1, we will cycle through the tokens until we get a
   /* token we want, incrementing the errors until then
     *********************************************************************/
-
+    bool _OP_prev = _OP;
+    
     int rule = GetRule(3, token);
     int errors = 0;
     string nonTerminal = "stmt_list";
@@ -288,15 +294,30 @@ int SyntacticalAnalyzer::stmt_list(){
 	rule = GetRule(3,token);
     }
     if(rule == 5){
+	_OP = _OP_prev;
+	if (_OP_ready()) {
+	    codeGen->write(" " + get<0>(_OP_STACK.top())+ " ");
+	}
+	
 	errors += runNonterminal("stmt");
 	errors += runNonterminal("stmt_list");
     } else if (rule == 6){
         //Do nothing for lambda.
     }
+
+    _OP = _OP_prev;
     ending(nonTerminal, token, errors);
     return errors;
 }
-
+bool _OP_ready() {
+    if (_OP_STACK.empty()) {
+	return false;
+    }
+    bool ready = get<1>(_OP_STACK.top());
+    get<1>(_OP_STACK.top()) = true;
+    return ready;
+    //return true;
+}
 /**
  * called when non-terminating stmt_() is reached
  */
@@ -325,7 +346,7 @@ int SyntacticalAnalyzer::stmt(){
     if (rule == 7){
 	errors += runNonterminal("literal");
     } else if (rule == 8){
-	codeGen->stmt_ident(Lexeme(), !inside_action); // reporting raw ident stmt to code gen (i think)
+	codeGen->stmt_ident(Lexeme(), _RV); // reporting raw ident stmt to code gen (i think)
 	token = NextToken();	//Get one additional token
     } else if (rule == 9){
 	token = NextToken();
@@ -371,7 +392,7 @@ int SyntacticalAnalyzer::literal(){
 	rule = GetRule(5,token);
     }
     if (rule == 10) {
-	codeGen->num_literal(Lexeme(), !inside_action); // reporting literal of type numlit
+	codeGen->num_literal(Lexeme(), _RV); // reporting literal of type numlit
 	token = NextToken();	//Get one additional token
     } else if (rule == 11) {
 	token = NextToken();
@@ -414,7 +435,7 @@ int SyntacticalAnalyzer::quoted_lit() {
 	rule = GetRule(6, token);
     }
     if (rule == 12) {
-	codeGen->quoted_literal(Lexeme(), !inside_action);
+	codeGen->quoted_literal(Lexeme(), _RV);
 	errors += runNonterminal("any_other_token");
     }
 
@@ -547,8 +568,10 @@ int SyntacticalAnalyzer::action(){
   /* If the rule is -1, we will cycle through the tokens until we get a
   /* token we want, incrementing the errors until then
     *********************************************************************/
-    bool inside_action_previously = inside_action;
-    bool nested_previously = nested;
+    bool _RV_prev = _RV;
+    bool _NEST_prev = _NEST;
+    bool _OP_prev = _OP;
+    string _OPERATOR_prev = _OPERATOR;
     
     int errors = 0;
     int rule = GetRule(10, token);
@@ -571,88 +594,119 @@ int SyntacticalAnalyzer::action(){
    
     switch (rule) {
     case 19:
-	inside_action = true;
+	_RV = false;
 	codeGen->if_begin(); // begin if statement
 	token = NextToken();
 	errors += runNonterminal("stmt");
 	codeGen->if_cond_end(); // end if condition, begin true return statement
-	inside_action = false;
+	_RV = true;
 	errors += runNonterminal("stmt");
 	codeGen->if_else_part(); // begin else part
 	errors += runNonterminal("else_part");
 	codeGen->if_else_part_end(); // end else part
+	_RV = _RV_prev;
 	break;
     case 20:
-	codeGen->listop_begin(Lexeme(), !inside_action);
-	inside_action = true;
-	nested = true;
+	codeGen->action_begin("listop\"" + Lexeme() + "\"", _RV);
+	_RV = false;
+	_NEST = true;
 	token = NextToken();
 	errors += runNonterminal("stmt");
-	inside_action = inside_action_previously;
-	nested = nested_previously;
-	codeGen->listop_end(!inside_action, nested);
+	_RV = _RV_prev;
+	_NEST = _NEST_prev;
+	codeGen->action_end(_RV, _NEST);
 	break;
     case 21:
-	codeGen->cons_begin(!inside_action);
+	codeGen->action_begin("cons(", _RV);
 	token = NextToken();
-	inside_action = true;
-	nested = true;
+	_RV = false;
+	_NEST = true;
 	errors += runNonterminal("stmt");
 	codeGen->write(", ");
 	errors += runNonterminal("stmt");
-	inside_action = inside_action_previously;
-	nested = nested_previously;
-	codeGen->cons_end(!inside_action, nested);
+	_RV = _RV_prev;
+	_NEST = _NEST_prev;
+	codeGen->action_end(_RV, _NEST);
 	break;
     case 22 ... 23: // unfinished
-	//codeGen->logical(!inside_action);
-	//string op = Lexeme();
+	codeGen->action_begin("", _RV);
+	_RV = false;
+	_NEST = true;
+	_OPERATOR = Lexeme();
         token = NextToken();
-        errors += runNonterminal("stmt_list");
+	errors += runNonterminal("stmt_list");
+	_RV = _RV_prev;
+	_NEST = _NEST_prev;
+	codeGen->action_end(_RV, _NEST);
         break;
-    case 24:
+    case 24 ... 31:
+	if (Lexeme() == "not") {
+	    codeGen->action_begin("!(", _RV);
+	} else {
+	    string pred = Lexeme();
+	    pred = pred.substr(0, pred.length()-1);
+	    codeGen->action_begin(pred + "p(", _RV);
+	}
 	token = NextToken();
+	_RV = false;
+	_NEST = true;
 	errors += runNonterminal("stmt");
-	break;
-    case 25 ... 31:
-	codeGen->predicate(Lexeme(), !inside_action);
-	token = NextToken();
-	inside_action = true;
-	nested = true;
-	errors += runNonterminal("stmt");
-	inside_action = inside_action_previously;
-	nested = nested_previously;
-	codeGen->action_end(!inside_action, nested);
+	_RV = _RV_prev;
+	_NEST = _NEST_prev;
+	codeGen->action_end(_RV, _NEST);
 	break;
     case 32:
+	codeGen->action_begin("(", _RV);
+	_OP = true;
+	_OP_STACK.push(tuple<string, bool>("+", false));
+	_RV = false;
+	_NEST = true;
 	token = NextToken();
 	errors += runNonterminal("stmt_list");
+	_OP = _OP_prev;
+	_RV = _RV_prev;
+	_NEST = _NEST_prev;
+	_OP_STACK.pop();
+	codeGen->action_end(_RV, _NEST);
 	break;
     case 33 ... 34:
 	token = NextToken();
 	errors += runNonterminal("stmt");
 	errors += runNonterminal("stmt_list");
 	break;
-    case 35 ... 41:
+    case 35 ... 40:
 	token = NextToken();
 	errors += runNonterminal("stmt_list");
+	break;
+    case 41:
+	codeGen->action_begin(Lexeme() + "(", _RV);
+	_OP = false;
+	_RV = false;
+	_NEST = true;
+	token = NextToken();
+	errors += runNonterminal("stmt_list");
+	_RV = _RV_prev;
+	_NEST = _NEST_prev;
+	codeGen->action_end(_RV, _NEST);
 	break;
     case 42:
 	token = NextToken();
 	codeGen->display();
-	inside_action = true;
+	_RV = false;
 	errors += runNonterminal("stmt");
 	codeGen->endDisplay();
+	_RV = _RV_prev;
 	break;
     case 43:
-      codeGen->newline();
-      token = lex ->GetToken();
-      break;
+	codeGen->action_begin("cout << endl;\n", false); // no return value i think?
+	token = lex ->GetToken();
+	break;
     }
 
-    inside_action = inside_action_previously; // reset inside action bool value
-    nested = nested_previously;
-    
+    _RV = _RV_prev; // reset flags to entry values
+    _NEST = _NEST_prev;
+    _OP = _OP_prev;
+    _OPERATOR = _OPERATOR_prev;
     ending(nonTerminal, token, errors);
     return errors;
 }
@@ -686,7 +740,7 @@ int SyntacticalAnalyzer::any_other_token(){
     }
     //do stuff for CodeGen
     if (rule==50)
-      codeGen->newline();
+	codeGen->action_begin("cout << endl;\n", false); // todo: unsure
     
     if (rule == 44) {
 	token = NextToken();
