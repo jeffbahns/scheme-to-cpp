@@ -443,10 +443,12 @@ int SyntacticalAnalyzer::quoted_lit() {
     }
     if (rule == 12) {
 	codeGen->action_begin("Object(\"", _RV);
+	_OP_push(" ", false);
 	_RV = false;
 	errors += runNonterminal("any_other_token");
 	_RV = _RV_prev;
 	codeGen->write("\"");
+	_OP_STACK.pop();
 	codeGen->action_end(_RV, _NEST);
     }
     _RV = _RV_prev;
@@ -773,6 +775,9 @@ int SyntacticalAnalyzer::any_other_token(){
 	token = NextToken();	//Get one additional lexeme
     } else if (rule >= 45 && rule <= 72) {
 	//codeGen->action_begin(Lexeme(), _RV);
+	if (_OP_ready()) {
+	    codeGen->write(_OP_get());
+	}
 	codeGen->write(Lexeme());
 	token = NextToken();	//Get one additional lexeme
 	

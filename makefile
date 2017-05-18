@@ -19,8 +19,8 @@ CodeGenerator.o: CodeGenerator.cpp CodeGenerator.h
 clean : 
 	rm *.o P3.out *.gch *.lst *.dbg *.p2 *.p1 *# *~ a.out
 run:
-	./P3.out t.ss
-	g++ t.cpp
+	./P3.out s.ss
+	g++ s.cpp
 	./a.out
 t:
 	cp Project3.cpp LexicalAnalyzer.h LexicalAnalyzer.save makefile test
