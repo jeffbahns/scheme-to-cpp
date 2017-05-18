@@ -24,7 +24,7 @@ void CodeGenerator::write(string code_to_write) {
 
 void CodeGenerator::define(string function_name) {
     if (function_name == "main") {
-	//write("int ");
+	write("int ");
 	main_function = true;
     } else {
 	write("Object ");
@@ -34,7 +34,7 @@ void CodeGenerator::define(string function_name) {
 
 void CodeGenerator::end_define() {
     if (main_function) {
-	write("return 0;\n");
+	write("return ret;\n");
 	main_function = false;
     } else {
 	write("return ret;\n");	
@@ -54,7 +54,7 @@ void CodeGenerator::param(string param) {
 void CodeGenerator::end_param() {
     write(") {\n");
     if (main_function) {
-	//write("int ret;\n"); // ? don't know if we do this for main..
+	write("int ret;\n"); // ? don't know if we do this for main..
     } else {
 	write("Object ret;\n");	
     }

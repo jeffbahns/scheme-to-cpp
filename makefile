@@ -22,7 +22,13 @@ run:
 	./P3.out t.ss
 	g++ t.cpp
 	./a.out
-submit : Project3.cpp LexicalAnalyzer.h LexicalAnalyzer.save SyntacticalAnalyzer.h SyntacticalAnalyzer.cpp RuleMonitor.cpp RuleMonitor.h makefile README.txt # TODO: make sure this works
+t:
+	cp Project3.cpp LexicalAnalyzer.h LexicalAnalyzer.save makefile test
+	cp SyntacticalAnalyzer.h SyntacticalAnalyzer.cpp CodeGenerator.h CodeGenerator.cpp test
+	cp SetLimits.cpp SetLimits.c SetLimits.h test
+	make -C test/
+
+submit : Project3.cpp LexicalAnalyzer.h LexicalAnalyzer.save SyntacticalAnalyzer.h SyntacticalAnalyzer.cpp  makefile README.txt # TODO: make sure this works RuleMonitor.cpp RuleMonitor.h
 	rm -rf TeamMP3
 	mkdir TeamMP3
 	cp Project3.cpp TeamMP3
@@ -30,6 +36,8 @@ submit : Project3.cpp LexicalAnalyzer.h LexicalAnalyzer.save SyntacticalAnalyzer
 	cp LexicalAnalyzer.save TeamMP3
 	cp SyntacticalAnalyzer.h TeamMP3
 	cp SyntacticalAnalyzer.cpp TeamMP3
+	cp CodeGenerator.h TeamMP3
+	cp CodeGenerator.cpp TeamMP3
 	cp makefile TeamMP3
 	cp README.txt TeamMP3
 	tar cfvz TeamMP3.tgz TeamMP3

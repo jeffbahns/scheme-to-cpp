@@ -91,7 +91,7 @@ SyntacticalAnalyzer::~SyntacticalAnalyzer ()
     ***************************************************/
     p2file.close();
     lstfile.close();
-    cout << "Lexical errors: ";
+    //cout << "Lexical errors: ";
     delete lex;
     delete codeGen;
 }
@@ -134,7 +134,7 @@ int SyntacticalAnalyzer::program (){
     }
 
     ending(nonTerminal, token, errors);
-    cout << "Syntactical errors: " << errors << " errors found in input file" << endl;
+    //cout << "Syntactical errors: " << errors << " errors found in input file" << endl;
     return errors;
 }      
 
@@ -680,7 +680,6 @@ int SyntacticalAnalyzer::action(){
 	break;
     case 33 ... 34:
 	codeGen->action_begin("(", _RV);
-	cout << "pushing true..\n";
 	_OP_push(_OPERATORS[rule % 32], true);
 	_RV = false;
 	_NEST = true;
@@ -706,12 +705,14 @@ int SyntacticalAnalyzer::action(){
 	break;
     case 41:
 	codeGen->action_begin(Lexeme() + "(", _RV);
+	_OP_push(",", false);
 	_RV = false;
 	_NEST = true;
 	token = NextToken();
 	errors += runNonterminal("stmt_list");
 	_RV = _RV_prev;
 	_NEST = _NEST_prev;
+	_OP_STACK.pop();
 	codeGen->action_end(_RV, _NEST);
 	break;
     case 42:
