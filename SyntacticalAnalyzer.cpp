@@ -635,6 +635,10 @@ int SyntacticalAnalyzer::any_other_token(){
 
 	rule = GetRule(11, token);
     }
+    //do stuff for CodeGen
+    if (rule==50)
+      codeGen->newline();
+    
     if (rule == 44) {
 	token = NextToken();
 	errors += runNonterminal("more_tokens");
