@@ -596,10 +596,16 @@ int SyntacticalAnalyzer::action(){
         token = NextToken();
         errors += runNonterminal("stmt_list");
         break;
-    case 24 ... 31:
-	token = NextToken();
-	errors += runNonterminal("stmt");
-	break;
+    case 24:
+      token = NextToken();
+      errors += runNonterminal("stmt");
+      break;
+    case 25 ... 31:
+      codeGen->predicate(Lexeme());
+      token = NextToken();
+      errors += runNonterminal("stmt");
+      codeGen->endPredicate();
+      break;
     case 32:
 	token = NextToken();
 	errors += runNonterminal("stmt_list");
