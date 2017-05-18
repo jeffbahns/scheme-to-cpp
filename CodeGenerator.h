@@ -11,29 +11,38 @@ class CodeGenerator {
  public:
     CodeGenerator(char * filename);
     ~CodeGenerator();
+    
     void write(string code_to_write);
+    
     void define(string function_name);
+
+    //comparisons
+    void predicate(string,string);
+    void lessT(string first, string second);
+    void gT(string first, string second);
+    void equal(string first, string second);
+    void notEqual(string first, string second);
+
+    //math
+    string plus(vector<string>);
+    string minus(vector<string>);
+    string mult(vector<string>);
+    string div(vector<string>);
+    
     void end_define();
     void param(string param);
     void end_param();    
     void stmt_ident(string ident, bool returned); // rule 8
     void num_literal(string lit, bool returned); // rule 7->10
     void quoted_literal(string lit, bool returned); // rule 7->11 
-    
-    void predicate();
-    void lessT(string first, string second);
-    void gT(string first, string second);
-    void equal(string first, string second);
-    void notEqual(string first, string second);
-    void plus();
-    void minus();
-    void mult();
-    void div();
+
     void ident();
-    void cons();
-    void listop();
-    void ifStatement();
+    void cons(string, string);
+    void listop(string,string);
+    void ifStatement(string, vector<string>, vector<string>);
     void display();
+    void endDisplay();
+    void newline();
     
  private:
     bool middle_param; // if in middle of param list use ',' to separate params

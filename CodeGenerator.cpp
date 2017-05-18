@@ -107,6 +107,113 @@ void CodeGenerator::gT(string first, string second)
     cppfile << "(" << first << " > " << second << ")" << endl;
 }
 
+void CodeGenerator::newline() {
+  cppfile << "cout<<endl;"<<endl;
+}
+
+void CodeGenerator::display() {
+  cppfile<<"cout<<";
+}
+
+void CodeGenerator::endDisplay() {
+  cppfile<<";";
+}
+
+string CodeGenerator::plus(vector<string> operands) {
+  string writable = "";
+  if(!operands.empty())
+    writable+= "("+operands[0];
+  for(int i=1;i<operands.size();i++)
+    {
+      writable+=" + "+operands[i];
+    }
+  if(!operands.empty())
+    writable+= ");";
+  cppfile<<writable<<endl;
+  return writable;
+}
+
+string CodeGenerator::minus(vector<string> operands) {
+  string writable = "";
+  if(!operands.empty())
+    writable+= "("+operands[0];
+  for(int i=1;i<operands.size();i++)
+    {
+      writable+=" - "+operands[i];
+    }
+  if(!operands.empty())
+    writable+= ");";
+  cppfile<<writable<<endl;
+  return writable;
+}
+
+string CodeGenerator::mult(vector<string> operands) {
+  string writable = "";
+  if(!operands.empty())
+    writable+= "("+operands[0];
+  for(int i=1;i<operands.size();i++)
+    {
+      writable+=" * "+operands[i];
+    }
+  if(!operands.empty())
+    writable+= ");";
+  cppfile<<writable<<endl;
+  return writable;
+}
+
+string CodeGenerator::div(vector<string> operands) {
+  string writable = "";
+  if(!operands.empty())
+    writable+= "("+operands[0];
+  for(int i=1;i<operands.size();i++)
+    {
+      writable+=" / "+operands[i];
+    }
+  if(!operands.empty())
+    writable+= ");";
+  cppfile<<writable<<endl;
+  return writable;
+}
+
+void CodeGenerator::cons(string op1, string op2) {
+  cppfile<<"cons(" << op1 << "," <<op2 <<");"<<endl;
+}
+
+void CodeGenerator::listop(string listop, string list) {
+  cppfile<<"listop(" <<listop <<", "<<list<<");"<<endl;
+}
+
+void CodeGenerator::ifStatement(string condition, vector<string> isTrue,
+				vector<string> isFalse) {
+  cppfile<<"if( " <<condition <<") { \n";
+  for(int i=0;i<isTrue.size();i++) {
+    cppfile<<"cout<<" <<isTrue[i]<<";\n";
+  }
+  cppfile<<" } \n else { \n";
+  for(int i=0;i<isFalse.size();i++)
+    {
+      cppfile<<"cout<<" <<isFalse[i]<<";\n";
+    }
+  cppfile<<"}"<<endl;
+}
+
+void CodeGenerator::predicate(string predType, string stmtToCheck) {
+  if(predType=="number?")
+    cppfile<<"numberp(";
+  else if(predType=="symbol?")
+    cppfile<<"symbolp(";
+  else if(predType=="zero?")
+    cppfile<<"zerop(";
+  else if(predType=="char?")
+    cppfile<<"charp(";
+  else if(predType=="string?")
+    cppfile<<"stringp(";
+  else //null by default, arbitrarily decided by Daniel
+    cppfile<<"nullp(";
+  
+  cppfile<<stmtToCheck<<");"<<endl;
+}
+
 void CodeGenerator::equal(string first, string second)
 {
     cppfile << "(" << first << " == " << second << ")" << endl;
@@ -117,47 +224,7 @@ void CodeGenerator::notEqual(string first, string second)
     cppfile << "(" << first << " != " << second << ")" << endl;
 }
 
-void CodeGenerator::plus()
-{
-    
-}
-
-void CodeGenerator::minus()
-{
-    
-}
-
-void CodeGenerator::mult()
-{
-    
-}
-
-void CodeGenerator::div()
-{
-    
-}
-
 void CodeGenerator::ident()
-{
-    
-}
-
-void CodeGenerator::cons()
-{
-    
-}
-
-void CodeGenerator::listop()
-{
-    
-}
-
-void CodeGenerator::ifStatement()
-{
-    
-}
-
-void CodeGenerator::display()
 {
     
 }
