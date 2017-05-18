@@ -35,7 +35,8 @@ class CodeGenerator {
     void cons(string, string);
     void listop(string,string);
     void ifStatement(string, vector<string>, vector<string>);
-    void display(string);
+    void display();
+    void endDisplay();
     void newline();
     
  private:

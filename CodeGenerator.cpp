@@ -27,8 +27,12 @@ void CodeGenerator::newline() {
   cppfile << "cout<<endl;"<<endl;
 }
 
-void CodeGenerator::display(string toDisplay) {
-  cppfile<<"cout<<"<<toDisplay<<";"<<endl;
+void CodeGenerator::display() {
+  cppfile<<"cout<<";
+}
+
+void CodeGenerator::endDisplay() {
+  cppfile<<";";
 }
 
 string CodeGenerator::plus(vector<string> operands) {

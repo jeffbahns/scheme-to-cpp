@@ -593,11 +593,14 @@ int SyntacticalAnalyzer::action(){
 	break;
     case 42:
 	token = NextToken();
+	codeGen->display();
 	errors += runNonterminal("stmt");
+	codeGen->endDisplay();
 	break;
     case 43:
-	token = lex ->GetToken();
-	break;
+      codeGen->newline();
+      token = lex ->GetToken();
+      break;
     }
 
     ending(nonTerminal, token, errors);
