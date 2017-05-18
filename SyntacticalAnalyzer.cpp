@@ -615,11 +615,14 @@ int SyntacticalAnalyzer::action(){
 	break;
     case 42:
 	token = NextToken();
+	codeGen->display();
 	errors += runNonterminal("stmt");
+	codeGen->endDisplay();
 	break;
     case 43:
-	token = lex ->GetToken();
-	break;
+      codeGen->newline();
+      token = lex ->GetToken();
+      break;
     }
 
     inside_action = inside_action_previously; // reset inside action bool value
@@ -655,6 +658,10 @@ int SyntacticalAnalyzer::any_other_token(){
 	}
 	rule = GetRule(11, token);
     }
+    //do stuff for CodeGen
+    if (rule==50)
+      codeGen->newline();
+    
     if (rule == 44) {
 	token = NextToken();
 	errors += runNonterminal("more_tokens");
