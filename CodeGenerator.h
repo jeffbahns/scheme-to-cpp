@@ -19,7 +19,15 @@ class CodeGenerator {
     void stmt_ident(string ident, bool returned); // rule 8
     void num_literal(string lit, bool returned); // rule 7->10
     void quoted_literal(string lit, bool returned); // rule 7->11 
-    
+
+    void if_begin();
+    void if_cond_end();
+
+    void if_else_part();
+    void if_else_part_end();
+
+    //void listop(string op);    
+
     void predicate();
     void lessT(string first, string second);
     void gT(string first, string second);
@@ -31,7 +39,6 @@ class CodeGenerator {
     void div();
     void ident();
     void cons();
-    void listop();
     void ifStatement();
     void display();
     

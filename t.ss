@@ -3,11 +3,9 @@
   )
 
 (define (literal_quotedlit_return)
-  (if 'hello_world
-      0
-      1
-      )
-  'hello_world
+  (if 0
+      5
+      6
   )
 
 (define (returns_number)

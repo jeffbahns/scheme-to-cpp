@@ -547,6 +547,8 @@ int SyntacticalAnalyzer::action(){
   /* If the rule is -1, we will cycle through the tokens until we get a
   /* token we want, incrementing the errors until then
     *********************************************************************/
+    bool inside_action_previously = inside_action;
+    
     int errors = 0;
     int rule = GetRule(10, token);
     string nonTerminal = "action";
@@ -568,12 +570,20 @@ int SyntacticalAnalyzer::action(){
    
     switch (rule) {
     case 19:
+	inside_action = true;
+	codeGen->if_begin(); // begin if statement
 	token = NextToken();
 	errors += runNonterminal("stmt");
+	codeGen->if_cond_end(); // end if condition, begin true return statement
+	inside_action = false;
 	errors += runNonterminal("stmt");
+	codeGen->if_else_part(); // begin else part
 	errors += runNonterminal("else_part");
+	codeGen->if_else_part_end(); // end else part
 	break;
     case 20:
+	inside_action = true;
+	
 	token = NextToken();
 	errors += runNonterminal("stmt");
 	break;
@@ -612,6 +622,8 @@ int SyntacticalAnalyzer::action(){
 	break;
     }
 
+    inside_action = inside_action_previously; // reset inside action bool value
+    
     ending(nonTerminal, token, errors);
     return errors;
 }

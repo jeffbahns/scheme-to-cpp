@@ -92,6 +92,26 @@ void CodeGenerator::quoted_literal(string lit, bool returned) {
     }
 }
 
+void CodeGenerator::if_begin() {
+    write("if (");
+}
+
+void CodeGenerator::if_cond_end() {
+    write(") {\n");
+}
+
+void CodeGenerator::if_else_part() {
+    write("} else {\n");
+}
+
+void CodeGenerator::if_else_part_end() {
+    write("}\n");
+}
+/*
+void CodeGenerator::listop(string op) {
+    
+}
+*/
 void CodeGenerator::predicate()
 {
     
@@ -143,11 +163,6 @@ void CodeGenerator::ident()
 }
 
 void CodeGenerator::cons()
-{
-    
-}
-
-void CodeGenerator::listop()
 {
     
 }
