@@ -726,7 +726,7 @@ int SyntacticalAnalyzer::action(){
 	_RV = _RV_prev;
 	break;
     case 43:
-	codeGen->action_begin("cout << endl;\n", false); // no return value i think?
+	codeGen->action_begin("cout << \"\n\";", false); // no return value i think?
 	token = lex ->GetToken();
 	break;
     }
@@ -765,7 +765,8 @@ int SyntacticalAnalyzer::any_other_token(){
 	rule = GetRule(11, token);
     }
     if (rule == 50) {
-	codeGen->action_begin("cout << endl;\n", false); // todo: unsure
+	codeGen->action_begin("\\n", _RV); // todo: unsure
+	token = NextToken();
     }
     else if (rule == 44) {
 	token = NextToken();
