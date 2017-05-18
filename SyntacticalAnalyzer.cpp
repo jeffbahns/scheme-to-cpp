@@ -33,6 +33,7 @@ int firstsTable[][33] =
 // code gen flags
 bool inside_action = false;
 bool nested = false;
+string _OP_;
 
 /**
  * constructor, takes filename as arg
@@ -329,7 +330,6 @@ int SyntacticalAnalyzer::stmt(){
     } else if (rule == 9){
 	token = NextToken();
 	errors += runNonterminal("action");
-	
 	vector<int>expected_vector;
 	expected_vector.push_back(RPAREN_T);
 	errors += enforce(token, expected_vector);
@@ -338,7 +338,6 @@ int SyntacticalAnalyzer::stmt(){
 	    ending(nonTerminal, token, errors);
             return errors;
         }
-		
 	token = NextToken();	//Get one additional token
     }
     ending(nonTerminal, token, errors);
@@ -594,21 +593,36 @@ int SyntacticalAnalyzer::action(){
 	codeGen->listop_end(!inside_action, nested);
 	break;
     case 21:
+	codeGen->cons_begin(!inside_action);
+	token = NextToken();
 	inside_action = true;
 	nested = true;
-	token = NextToken();
 	errors += runNonterminal("stmt");
+	codeGen->write(", ");
 	errors += runNonterminal("stmt");
 	inside_action = inside_action_previously;
 	nested = nested_previously;
+	codeGen->cons_end(!inside_action, nested);
 	break;
-    case 22 ... 23:
+    case 22 ... 23: // unfinished
+	//codeGen->logical(!inside_action);
+	//string op = Lexeme();
         token = NextToken();
         errors += runNonterminal("stmt_list");
         break;
-    case 24 ... 31:
+    case 24:
 	token = NextToken();
 	errors += runNonterminal("stmt");
+	break;
+    case 25 ... 31:
+	codeGen->predicate(Lexeme(), !inside_action);
+	token = NextToken();
+	inside_action = true;
+	nested = true;
+	errors += runNonterminal("stmt");
+	inside_action = inside_action_previously;
+	nested = nested_previously;
+	codeGen->action_end(!inside_action, nested);
 	break;
     case 32:
 	token = NextToken();

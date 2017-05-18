@@ -17,7 +17,6 @@ class CodeGenerator {
     void define(string function_name);
 
     //comparisons
-    void predicate(string,string);
     void lessT(string first, string second);
     void gT(string first, string second);
     void equal(string first, string second);
@@ -42,9 +41,11 @@ class CodeGenerator {
     void if_else_part();
     void if_else_part_end();
 
+    /* ACTIONS*/
+
     /**/
-    void beg(bool returned);
-    void end(bool returned, bool nested);
+    void action_begin(bool returned);
+    void action_end(bool returned, bool nested);
     
     void listop_begin(string listop, bool returned);
     void listop(string operand);
@@ -53,6 +54,11 @@ class CodeGenerator {
     void cons_begin(bool returned);
     void cons(string operand);
     void cons_end(bool returned, bool nested);
+
+    void logical(string op, bool returned); // and / or
+    void logical_end(bool returned, bool nested);
+    /**/
+    void predicate(string predicate, bool returned); // rules 25-31
     /**/
     
     void plus();
@@ -71,6 +77,7 @@ class CodeGenerator {
  private:
     bool middle_param; // if in middle of param list use ',' to separate params
     bool main_function; // to check if we are in middle of generating main file, has differnent return type pretty much
+    string current_op;
     ofstream cppfile;
     
 };

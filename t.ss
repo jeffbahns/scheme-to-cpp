@@ -13,9 +13,28 @@
 ;  666
 ;  )
 
-(define (opraw t)
-  (if (car (cdr t))
-      (display 'hello_world)
+;(define (opraw t)
+;  (display t)
+;)
+
+;(define (cons_test t)
+;  (if (cons t t)
+;      (cons t t)
+;      (if (car t)
+;	  666
+;	  666666
+;	  )
+;      )
+;  )
+
+
+(define (predicate_test t)
+  (if (null? t)
+      (zero? t)
+      (if (char? t)
+	  (string? t)
+	  (symbol? t)
+	  )
       )
   )
 

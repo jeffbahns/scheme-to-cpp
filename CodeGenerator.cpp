@@ -37,7 +37,6 @@ void CodeGenerator::end_define() {
     } else {
 	write("return ret;\n");	
     }
-
     write("}\n\n");
 }
 
@@ -108,32 +107,51 @@ void CodeGenerator::if_else_part_end() {
     write("}\n");
 }
 
-void CodeGenerator::listop_begin(string listop, bool returned) {
+/* GENERAL ACTIONS (not including "if") */
+
+void CodeGenerator::action_begin(bool returned) {
     if (returned) {
 	write("ret = ");
-    } 
-    write("listop(\"" + listop + "\", ");	
+    }
 }
 
-void CodeGenerator::listop_end(bool returned, bool nested) {
+void CodeGenerator::action_end(bool returned, bool nested) {
     write(")");
     if (returned && !nested) {
 	write(";\n");
     } 
 }
 
+void CodeGenerator::listop_begin(string listop, bool returned) {
+    action_begin(returned);
+    write("listop(\"" + listop + "\", ");
+}
+
+void CodeGenerator::listop_end(bool returned, bool nested) {
+    action_end(returned, nested);
+}
+
 void CodeGenerator::cons_begin(bool returned) {
-    if (returned) {
-	write("ret = ");
-    }
+    action_begin(returned);
     write("cons(");
 }
 
 void CodeGenerator::cons_end(bool returned, bool nested) {
-    write(")");
-    if (returned && !nested) {
-	write(";\n")
-    }
+    action_end(returned, nested);
+}
+
+void CodeGenerator::logical(string op, bool returned) {
+    action_begin(returned);
+    write("(");
+}
+
+void CodeGenerator::logical_end(bool returned, bool nested) {
+    action_end(returned, nested);
+}
+
+void CodeGenerator::predicate(string predicate, bool returned) {
+    action_begin(returned);
+    write(predicate.substr(0,predicate.length()-1) + "p(");
 }
 
 void CodeGenerator::lessT(string first, string second)
@@ -232,23 +250,6 @@ void CodeGenerator::ifStatement(string condition, vector<string> isTrue,
       cppfile<<"cout<<" <<isFalse[i]<<";\n";
     }
   cppfile<<"}"<<endl;
-}
-
-void CodeGenerator::predicate(string predType, string stmtToCheck) {
-  if(predType=="number?")
-    cppfile<<"numberp(";
-  else if(predType=="symbol?")
-    cppfile<<"symbolp(";
-  else if(predType=="zero?")
-    cppfile<<"zerop(";
-  else if(predType=="char?")
-    cppfile<<"charp(";
-  else if(predType=="string?")
-    cppfile<<"stringp(";
-  else //null by default, arbitrarily decided by Daniel
-    cppfile<<"nullp(";
-  
-  cppfile<<stmtToCheck<<");"<<endl;
 }
 
 void CodeGenerator::equal(string first, string second)
