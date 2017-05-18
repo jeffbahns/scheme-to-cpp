@@ -1,3 +1,4 @@
 (define (main)
-  (newline)
-  )
+	(+ 2 4)
+	(- 16 5)
+)
