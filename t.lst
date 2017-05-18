@@ -1,6 +1,0 @@
-Input file: t.ss
-   1: (define (main)
-   2:   (newline)
-   3:   )
-0 errors found in input file
-cal analysis: 0

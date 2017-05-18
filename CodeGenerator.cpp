@@ -35,7 +35,7 @@ void CodeGenerator::end_define() {
     if (main_function) {
 	main_function = false;
     } else {
-	write(tab + "return ret;\n");	
+	write("return ret;\n");	
     }
 
     write("}\n\n");
@@ -53,16 +53,16 @@ void CodeGenerator::param(string param) {
 void CodeGenerator::end_param() {
     write(") {\n");
     if (main_function) {
-	write(tab + "int ret;\n"); // ? don't know if we do this for main..
+	write("int ret;\n"); // ? don't know if we do this for main..
     } else {
-	write(tab + "Object ret;\n");	
+	write("Object ret;\n");	
     }
     middle_param = false;
 }
 
 void CodeGenerator::stmt_ident(string ident, bool returned) {
     if (returned) {
-	write(tab + "ret = " + ident + ";\n");	
+	write("ret = " + ident + ";\n");	
     } else {
 	write(ident);	
     }
@@ -71,9 +71,9 @@ void CodeGenerator::stmt_ident(string ident, bool returned) {
 void CodeGenerator::num_literal(string lit, bool returned) {
     if (returned) {
 	if (main_function) {
-	    write(tab + "ret = " + lit + ";\n");
+	    write("ret = " + lit + ";\n");
 	} else {
-	    write(tab + "ret = Object(" + lit + ");\n");
+	    write("ret = Object(" + lit + ");\n");
 	}
     } else {
 	write("Object(" + lit + ")");
@@ -83,9 +83,9 @@ void CodeGenerator::num_literal(string lit, bool returned) {
 void CodeGenerator::quoted_literal(string lit, bool returned) {
     if (returned) {
 	if (main_function) {
-	    write(tab + "ret = " + lit + ";\n");
+	    write("ret = " + lit + ";\n");
 	} else {
-	    write(tab + "ret = Object(\"" + lit + "\");\n");
+	    write("ret = Object(\"" + lit + "\");\n");
 	}
     } else {
 	write("Object(\"" + lit + "\")");
@@ -107,11 +107,34 @@ void CodeGenerator::if_else_part() {
 void CodeGenerator::if_else_part_end() {
     write("}\n");
 }
-/*
-void CodeGenerator::listop(string op) {
-    
+
+void CodeGenerator::listop_begin(string listop, bool returned) {
+    if (returned) {
+	write("ret = ");
+    } 
+    write("listop(\"" + listop + "\", ");	
 }
-*/
+
+void CodeGenerator::listop_end(bool returned, bool nested) {
+    write(")");
+    if (returned && !nested) {
+	write(";\n");
+    } 
+}
+
+void CodeGenerator::cons_begin(bool returned) {
+    if (returned) {
+	write("ret = ");
+    }
+    write("cons(");
+}
+
+void CodeGenerator::cons_end(bool returned, bool nested) {
+    write(")");
+    if (returned && !nested) {
+	write(";\n")
+    }
+}
 
 void CodeGenerator::lessT(string first, string second)
 {
@@ -128,11 +151,11 @@ void CodeGenerator::newline() {
 }
 
 void CodeGenerator::display() {
-  cppfile<<"cout<<";
+    write("cout << ");
 }
 
 void CodeGenerator::endDisplay() {
-  cppfile<<";";
+    write(" << endl;\n");
 }
 
 string CodeGenerator::plus(vector<string> operands) {
@@ -190,14 +213,12 @@ string CodeGenerator::div(vector<string> operands) {
   cppfile<<writable<<endl;
   return writable;
 }
-
+/*
 void CodeGenerator::cons(string op1, string op2) {
   cppfile<<"cons(" << op1 << "," <<op2 <<");"<<endl;
 }
+*/
 
-void CodeGenerator::listop(string listop, string list) {
-  cppfile<<"listop(" <<listop <<", "<<list<<");"<<endl;
-}
 
 void CodeGenerator::ifStatement(string condition, vector<string> isTrue,
 				vector<string> isFalse) {

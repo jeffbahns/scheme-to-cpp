@@ -42,8 +42,19 @@ class CodeGenerator {
     void if_else_part();
     void if_else_part_end();
 
-    //void listop(string op);    
+    /**/
+    void beg(bool returned);
+    void end(bool returned, bool nested);
+    
+    void listop_begin(string listop, bool returned);
+    void listop(string operand);
+    void listop_end(bool returned, bool nested);
 
+    void cons_begin(bool returned);
+    void cons(string operand);
+    void cons_end(bool returned, bool nested);
+    /**/
+    
     void plus();
     void minus();
     void mult();
@@ -52,7 +63,6 @@ class CodeGenerator {
     void cons();
     void ifStatement();
     void cons(string, string);
-    void listop(string,string);
     void ifStatement(string, vector<string>, vector<string>);
     void display();
     void endDisplay();

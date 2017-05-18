@@ -32,6 +32,7 @@ int firstsTable[][33] =
 
 // code gen flags
 bool inside_action = false;
+bool nested = false;
 
 /**
  * constructor, takes filename as arg
@@ -548,6 +549,7 @@ int SyntacticalAnalyzer::action(){
   /* token we want, incrementing the errors until then
     *********************************************************************/
     bool inside_action_previously = inside_action;
+    bool nested_previously = nested;
     
     int errors = 0;
     int rule = GetRule(10, token);
@@ -582,15 +584,23 @@ int SyntacticalAnalyzer::action(){
 	codeGen->if_else_part_end(); // end else part
 	break;
     case 20:
+	codeGen->listop_begin(Lexeme(), !inside_action);
 	inside_action = true;
-	
+	nested = true;
 	token = NextToken();
 	errors += runNonterminal("stmt");
+	inside_action = inside_action_previously;
+	nested = nested_previously;
+	codeGen->listop_end(!inside_action, nested);
 	break;
     case 21:
+	inside_action = true;
+	nested = true;
 	token = NextToken();
 	errors += runNonterminal("stmt");
 	errors += runNonterminal("stmt");
+	inside_action = inside_action_previously;
+	nested = nested_previously;
 	break;
     case 22 ... 23:
         token = NextToken();
@@ -616,6 +626,7 @@ int SyntacticalAnalyzer::action(){
     case 42:
 	token = NextToken();
 	codeGen->display();
+	inside_action = true;
 	errors += runNonterminal("stmt");
 	codeGen->endDisplay();
 	break;
@@ -626,6 +637,7 @@ int SyntacticalAnalyzer::action(){
     }
 
     inside_action = inside_action_previously; // reset inside action bool value
+    nested = nested_previously;
     
     ending(nonTerminal, token, errors);
     return errors;
