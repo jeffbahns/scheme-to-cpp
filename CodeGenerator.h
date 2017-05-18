@@ -17,7 +17,7 @@ class CodeGenerator {
     void define(string function_name);
 
     //comparisons
-    void predicate();
+    void predicate(string,string);
     void lessT();
     void greaterT();
     void ltE();

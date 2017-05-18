@@ -108,3 +108,20 @@ void CodeGenerator::ifStatement(string condition, vector<string> isTrue,
     }
   cppfile<<"}"<<endl;
 }
+
+void CodeGenerator::predicate(string predType, string stmtToCheck) {
+  if(predType=="number?")
+    cppfile<<"numberp(";
+  else if(predType=="symbol?")
+    cppfile<<"symbolp(";
+  else if(predType=="zero?")
+    cppfile<<"zerop(";
+  else if(predType=="char?")
+    cppfile<<"charp(";
+  else if(predType=="string?")
+    cppfile<<"stringp(";
+  else //null by default, arbitrarily decided by Daniel
+    cppfile<<"nullp(";
+  
+  cppfile<<stmtToCheck<<");"<<endl;
+}
