@@ -15,13 +15,6 @@
 
 using namespace std;
 
-stack<tuple<string, bool>> _OP_STACK; // tuple (operator, ready_to_use)
-
-bool _OP_ready();
-string _OP_get();
-void _OP_push(string op, bool ready);
-
-string _OPERATORS[] = {"+", "-", "/", "*", "==", ">", "<", ">=", "<=", "&&", "||"};
 int firstsTable[][33] =
     {
 	{0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1,  -1, -1, -1, -1},
@@ -37,11 +30,17 @@ int firstsTable[][33] =
 	{0, 41, -1, 21, 19, 42, 43, 20, 22, 23, 24, -1, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, -1, -1, -1, -1, -1},
 	{0, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 44, -1, 72, -1, -1}
     };
+string _OPERATORS[] = {"+", "-", "/", "*", "==", ">", "<", ">=", "<=", "&&", "||"};
+stack<tuple<string, bool>> _OP_STACK; // tuple <operator, ready_to_use>
 
+bool _OP_ready();
+string _OP_get();
+void _OP_push(string op, bool ready);
 
 // FLAGS
 bool _RV = true; // return val? (should i put a "ret = " in front of next statement)
 bool _NEST = false; // nested? (do i put a colon after whatever statement i finish next, or is it nested in something else)
+
 /**
  * constructor, takes filename as arg
  **/
@@ -407,7 +406,6 @@ int SyntacticalAnalyzer::literal(){
     } else if (rule == 11) {
 	token = NextToken();
 	errors += runNonterminal("quoted_lit");
-
     }
 
     ending(nonTerminal, token, errors);
@@ -426,8 +424,8 @@ int SyntacticalAnalyzer::quoted_lit() {
   /* token we want, incrementing the errors until then
     *********************************************************************/
 
+    bool _RV_prev = _RV;
     int errors = 0;
-	
     int rule = GetRule(6,token);
     string nonTerminal = "quoted_lit";
     print(nonTerminal, token, rule);
@@ -441,14 +439,17 @@ int SyntacticalAnalyzer::quoted_lit() {
 	    ending(nonTerminal, token, errors);
 	    return errors;
 	}
-
 	rule = GetRule(6, token);
     }
     if (rule == 12) {
-	codeGen->quoted_literal(Lexeme(), _RV);
+	codeGen->action_begin("Object(\"", _RV);
+	_RV = false;
 	errors += runNonterminal("any_other_token");
+	_RV = _RV_prev;
+	codeGen->write("\"");
+	codeGen->action_end(_RV, _NEST);
     }
-
+    _RV = _RV_prev;
     ending("quoted_lit", token, errors);
     return errors;
 
@@ -485,6 +486,7 @@ int SyntacticalAnalyzer::more_tokens(){
 	errors += runNonterminal("any_other_token");
 	errors += runNonterminal("more_tokens");
     } else if (rule == 14) {
+	//codeGen->write( "\");\n");
         //Do nothing for lambda.
     }
 
@@ -742,7 +744,7 @@ int SyntacticalAnalyzer::any_other_token(){
   /* If the rule is -1, we will cycle through the tokens until we get a
   /* token we want, incrementing the errors until then
     *********************************************************************/
-
+    bool _RV_prev = _RV;
     int errors = 0;
     int rule = GetRule(11, token);
     string nonTerminal = "any_other_token";
@@ -759,18 +761,22 @@ int SyntacticalAnalyzer::any_other_token(){
 	}
 	rule = GetRule(11, token);
     }
-    //do stuff for CodeGen
-    if (rule==50)
+    if (rule == 50) {
 	codeGen->action_begin("cout << endl;\n", false); // todo: unsure
-    
-    if (rule == 44) {
+    }
+    else if (rule == 44) {
 	token = NextToken();
+	//codeGen->action_begin("Object(\"" + Lexeme(), _RV);
+	_RV = false;
 	errors += runNonterminal("more_tokens");
 	token = NextToken();	//Get one additional lexeme
     } else if (rule >= 45 && rule <= 72) {
-	
+	//codeGen->action_begin(Lexeme(), _RV);
+	codeGen->write(Lexeme());
 	token = NextToken();	//Get one additional lexeme
+	
     }
+    _RV = _RV_prev;
     ending(nonTerminal, token, errors);
     return errors;
 

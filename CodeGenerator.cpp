@@ -2,6 +2,7 @@
 
 const string tab = "    "; // const used to quickly tab 
 int tab_level = 0;
+
 CodeGenerator::CodeGenerator(char * filename) {
     middle_param = false;
     main_function = false;
@@ -115,7 +116,6 @@ void CodeGenerator::action_begin(string to_write, bool return_val) {
     }
     write(to_write);
 }
-
 void CodeGenerator::action_end(bool return_val, bool is_nested) {
     write(")");
     if (return_val && !is_nested) {
@@ -131,77 +131,3 @@ void CodeGenerator::display() {
 void CodeGenerator::endDisplay() {
     write(" << endl;\n");
 }
-
-void CodeGenerator::lessT(string first, string second)
-{
-    cppfile << "(" << first << " < " << second << ")" << endl;
-}
-
-void CodeGenerator::gT(string first, string second)
-{
-    cppfile << "(" << first << " > " << second << ")" << endl;
-}
-
-
-string CodeGenerator::plus(vector<string> operands) {
-  string writable = "";
-  if(!operands.empty())
-    writable+= "("+operands[0];
-  for(int i=1;i<operands.size();i++)
-    {
-      writable+=" + "+operands[i];
-    }
-  if(!operands.empty())
-    writable+= ");";
-  cppfile<<writable<<endl;
-  return writable;
-}
-
-string CodeGenerator::minus(vector<string> operands) {
-  string writable = "";
-  if(!operands.empty())
-    writable+= "("+operands[0];
-  for(int i=1;i<operands.size();i++)
-    {
-      writable+=" - "+operands[i];
-    }
-  if(!operands.empty())
-    writable+= ");";
-  cppfile<<writable<<endl;
-  return writable;
-}
-
-string CodeGenerator::mult(vector<string> operands) {
-  string writable = "";
-  if(!operands.empty())
-    writable+= "("+operands[0];
-  for(int i=1;i<operands.size();i++)
-    {
-      writable+=" * "+operands[i];
-    }
-  if(!operands.empty())
-    writable+= ");";
-  cppfile<<writable<<endl;
-  return writable;
-}
-
-string CodeGenerator::div(vector<string> operands) {
-  string writable = "";
-  if(!operands.empty())
-    writable+= "("+operands[0];
-  for(int i=1;i<operands.size();i++)
-    {
-      writable+=" / "+operands[i];
-    }
-  if(!operands.empty())
-    writable+= ");";
-  cppfile<<writable<<endl;
-  return writable;
-}
-
-void CodeGenerator::equal(string first, string second)
-{
-    cppfile << "(" << first << " == " << second << ")" << endl;
-}
-
-

@@ -49,12 +49,12 @@
   )
 
 (define (comparative_test)
-  (if (>= 5 4)
+  (if (>= 5 10)
       (if (<= 1 2)
 	  (< 5 4)
 	  (> 1 2)
 	  )
-      (* 1 2)
+      (= 1 1)
       )
   )
 
@@ -64,9 +64,17 @@
       1
       )
   )
+
+(define (token_test)
+  'hello_world
+  '(hi fuck > < > and or)
+  )
+
 (define (main)
   (display (not_test 5))
   (display (add_test))
   (display (arith_test))
   (display (subdiv_test))
+  (display (comparative_test))
+  (display (token_test))
   )

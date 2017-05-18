@@ -15,36 +15,21 @@ class CodeGenerator {
     void write(string code_to_write);
     
     void define(string function_name);
-
-    //comparisons
-    void lessT(string first, string second);
-    void gT(string first, string second);
-    void equal(string first, string second);
-    void notEqual(string first, string second);
-
-    //math
-    string plus(vector<string>);
-    string minus(vector<string>);
-    string mult(vector<string>);
-    string div(vector<string>);
-    
     void end_define();
     void param(string param);
-    void end_param();    
+    void end_param();
+    
     void stmt_ident(string ident, bool return_val); // rule 8
     void num_literal(string lit, bool return_val); // rule 7->10
-    void quoted_literal(string lit, bool return_val); // rule 7->11 
-
-    void if_begin();
-    void if_cond_end();
-
-
-
+    void quoted_literal(string lit, bool return_val); // rule 11
+    
     /* ACTIONS, grouped by similar structure*/
+    void if_begin(); // rule 19
+    void if_cond_end();
     void if_else_part();
     void if_else_part_end();
-    /* help do general stuff */ 
-    void action_begin(string to_write, bool return_val); // rules 23->31, 41, 43
+
+    void action_begin(string to_write, bool return_val); // rules 20->41, 43
     void action_end(bool return_val, bool is_nested);
     /**/
     void display(); // rule 42
