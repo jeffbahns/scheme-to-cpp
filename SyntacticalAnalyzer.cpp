@@ -15,9 +15,13 @@
 
 using namespace std;
 
-string operators[11] = {"&&", "||", "+", "-", "/", "*", "==", ">", "<", ">=", "<="};
-stack<tuple<string, bool>> _OP_STACK;
+stack<tuple<string, bool>> _OP_STACK; // tuple (operator, ready_to_use)
+
 bool _OP_ready();
+string _OP_get();
+void _OP_push(string op, bool ready);
+
+string _OPERATORS[] = {"+", "-", "/", "*", "==", ">", "<", ">=", "<=", "&&", "||"};
 int firstsTable[][33] =
     {
 	{0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1,  -1, -1, -1, -1},
@@ -38,8 +42,6 @@ int firstsTable[][33] =
 // FLAGS
 bool _RV = true; // return val? (should i put a "ret = " in front of next statement)
 bool _NEST = false; // nested? (do i put a colon after whatever statement i finish next, or is it nested in something else)
-bool _OP = false; // is there an operator to use?
-string _OPERATOR; // what is that operator?
 /**
  * constructor, takes filename as arg
  **/
@@ -276,8 +278,6 @@ int SyntacticalAnalyzer::stmt_list(){
   /* If the rule is -1, we will cycle through the tokens until we get a
   /* token we want, incrementing the errors until then
     *********************************************************************/
-    bool _OP_prev = _OP;
-    
     int rule = GetRule(3, token);
     int errors = 0;
     string nonTerminal = "stmt_list";
@@ -294,29 +294,39 @@ int SyntacticalAnalyzer::stmt_list(){
 	rule = GetRule(3,token);
     }
     if(rule == 5){
-	_OP = _OP_prev;
 	if (_OP_ready()) {
-	    codeGen->write(" " + get<0>(_OP_STACK.top())+ " ");
+	    codeGen->write(" " + _OP_get() + " ");
 	}
-	
 	errors += runNonterminal("stmt");
 	errors += runNonterminal("stmt_list");
     } else if (rule == 6){
         //Do nothing for lambda.
     }
 
-    _OP = _OP_prev;
     ending(nonTerminal, token, errors);
     return errors;
 }
+
 bool _OP_ready() {
     if (_OP_STACK.empty()) {
 	return false;
     }
-    bool ready = get<1>(_OP_STACK.top());
-    get<1>(_OP_STACK.top()) = true;
-    return ready;
-    //return true;
+    if (!get<1>(_OP_STACK.top())) {
+	get<1>(_OP_STACK.top()) = true; // if not ready, make it ready
+	return false;
+    }
+    return true;
+}
+
+string _OP_get() {
+    if (_OP_STACK.empty()) {
+	return "";
+    }
+    return get<0>(_OP_STACK.top());
+}
+
+void _OP_push(string op, bool ready) {
+    _OP_STACK.push(tuple<string, bool>(op, ready));
 }
 /**
  * called when non-terminating stmt_() is reached
@@ -570,8 +580,6 @@ int SyntacticalAnalyzer::action(){
     *********************************************************************/
     bool _RV_prev = _RV;
     bool _NEST_prev = _NEST;
-    bool _OP_prev = _OP;
-    string _OPERATOR_prev = _OPERATOR;
     
     int errors = 0;
     int rule = GetRule(10, token);
@@ -628,15 +636,16 @@ int SyntacticalAnalyzer::action(){
 	_NEST = _NEST_prev;
 	codeGen->action_end(_RV, _NEST);
 	break;
-    case 22 ... 23: // unfinished
-	codeGen->action_begin("", _RV);
+    case 22 ... 23: 
+	codeGen->action_begin("(", _RV);
+	_OP_push(_OPERATORS[rule - 13], false);
 	_RV = false;
 	_NEST = true;
-	_OPERATOR = Lexeme();
         token = NextToken();
 	errors += runNonterminal("stmt_list");
 	_RV = _RV_prev;
 	_NEST = _NEST_prev;
+	_OP_STACK.pop();
 	codeGen->action_end(_RV, _NEST);
         break;
     case 24 ... 31:
@@ -657,30 +666,44 @@ int SyntacticalAnalyzer::action(){
 	break;
     case 32:
 	codeGen->action_begin("(", _RV);
-	_OP = true;
-	_OP_STACK.push(tuple<string, bool>("+", false));
+	_OP_push(_OPERATORS[rule % 32], false);
 	_RV = false;
 	_NEST = true;
 	token = NextToken();
 	errors += runNonterminal("stmt_list");
-	_OP = _OP_prev;
 	_RV = _RV_prev;
 	_NEST = _NEST_prev;
 	_OP_STACK.pop();
 	codeGen->action_end(_RV, _NEST);
 	break;
     case 33 ... 34:
+	codeGen->action_begin("(", _RV);
+	cout << "pushing true..\n";
+	_OP_push(_OPERATORS[rule % 32], true);
+	_RV = false;
+	_NEST = true;
 	token = NextToken();
 	errors += runNonterminal("stmt");
 	errors += runNonterminal("stmt_list");
+	_RV = _RV_prev;
+	_NEST = _NEST_prev;
+	_OP_STACK.pop();
+	codeGen->action_end(_RV, _NEST);
 	break;
     case 35 ... 40:
+	codeGen->action_begin("(", _RV);
+	_OP_push(_OPERATORS[rule % 32], false);
+	_RV = false;
+	_NEST = true;
 	token = NextToken();
 	errors += runNonterminal("stmt_list");
+	_RV = _RV_prev;
+	_NEST = _NEST_prev;
+	_OP_STACK.pop();
+	codeGen->action_end(_RV, _NEST);
 	break;
     case 41:
 	codeGen->action_begin(Lexeme() + "(", _RV);
-	_OP = false;
 	_RV = false;
 	_NEST = true;
 	token = NextToken();
@@ -705,8 +728,6 @@ int SyntacticalAnalyzer::action(){
 
     _RV = _RV_prev; // reset flags to entry values
     _NEST = _NEST_prev;
-    _OP = _OP_prev;
-    _OPERATOR = _OPERATOR_prev;
     ending(nonTerminal, token, errors);
     return errors;
 }
