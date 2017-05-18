@@ -1,0 +1,5 @@
+(define (main)
+	(newline)
+	(display (> 15 2))
+	(display '(you can 'me))
+)
