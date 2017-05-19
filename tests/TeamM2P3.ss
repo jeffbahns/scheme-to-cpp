@@ -1,5 +1,5 @@
 (define (main)
-	(* 4 4)
-	(/ 25 5)
-	(+ 15 (- 3 1))
+  (display(* 4 4))
+  (display(/ 25 5))
+  (display(+ 15 (- 3 1)))
 )

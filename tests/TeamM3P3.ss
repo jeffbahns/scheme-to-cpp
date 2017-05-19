@@ -1,3 +1,3 @@
 (define (main)
-	'things
+  (display 'things)
 )

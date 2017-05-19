@@ -1,4 +1,4 @@
 (define (main)
-	(car (cons 1 2))
-	(cdr (cons 1 2))
+  ;(display(car (cons 1 2)))
+  ;(display(cdr (1 2)))
 )

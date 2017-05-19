@@ -1,4 +1,4 @@
 (define (main)
-	(>= 15 14)
-	(<= 6 6)
+  (display(>= 15 14))
+  (display(<= 6 6))
 )

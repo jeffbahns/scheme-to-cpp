@@ -1,3 +1,3 @@
 (define (main)
-	(list? '(a b c))
+  (display(list? '(a b c)))
 )

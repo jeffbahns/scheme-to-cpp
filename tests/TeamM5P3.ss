@@ -1,5 +1,5 @@
 (define (main)
-	(string? "thing")p
-	(number? 45)
-	(zero? 0)
+  (display (string? 'thing))
+  (display (number? 45))
+  (display (zero? 0))
 )

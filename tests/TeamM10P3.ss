@@ -1,13 +1,11 @@
 (define (stuff)
-	(cons '(1 2 3) '(4 5 6))
+  (cons '() '(1 2 3))
 )
 (define (stuff2)
-	(and (values 1 2))
-	(or (values 1 2))
-	(not (> 3 7))
+  0
 )
 
 (define (main)
-	(stuff)
-	(stuff2)
+  (display(stuff))
+  (display(stuff2))
 )
