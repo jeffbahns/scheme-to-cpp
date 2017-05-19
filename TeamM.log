@@ -1,5 +1,68 @@
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-5/1/2017, 3:40PM
+5/18/2017
+Jeff, Daniel, Tyler (Everyone)
+
+
+WHAT WE DID SINCE LAST MEETING
+- Bugfixing
+
+WHAT WE DID DURING THIS MEETING
+- Bugfixing
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+5/17/2017
+Jeff, Daniel, Tyler (Everyone)
+
+
+WHAT WE DID SINCE LAST MEETING
+- Fully integrate the CodeGenerator into the SyntacticalAnalyzer
+
+WHAT WE DID DURING THIS MEETING
+- Bugfixing
+
+WHAT WE ARE DOING NEXT MEETING  
+- More bugfixing
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+5/14/2017
+Jeff, Daniel, Tyler (Everyone)
+
+
+WHAT WE DID SINCE LAST MEETING
+- All translations from Scheme to C++ are done
+
+WHAT WE DID DURING THIS MEETING
+- Discuss how to translate scheme code in context (i.e. what needs to be lead with "cout<<" or "toReturn = ", etc.)
+
+WHAT WE ARE DOING NEXT MEETING  
+- Integrate the CodeGenerator into the SyntacticalAnalyzer
+
+- Question: Do functions ever need to return void?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+5/5/2017
+Jeff, Daniel, Tyler (Everyone)
+
+
+WHAT WE DID SINCE LAST MEETING
+- Created a Google Doc to write Scheme to C++ translations
+
+WHAT WE DID DURING THIS MEETING
+- We wrote implementations to convert Scheme code to C++
+
+WHAT WE ARE DOING NEXT MEETING  
+- Begin building the code generator
+
+- Question: Do we need to write prototypes for functions?
+- Question: Will return type will functions have?
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+5/1/2017
 Jeff, Daniel, Tyler (Everyone)
 
 
@@ -10,7 +73,7 @@ WHAT WE DID DURING THIS MEETING
 - During the meeting, we looked at Project 2 implementations and considered the various options
 
 WHAT WE ARE DOING NEXT MEETING  
-- Next meeting, we plan to finalize a decision on implementations and begin building the code generator
+- Next meeting, we plan to finalize a decision on implementations and begin translating Scheme code fragments to C++
 
 - Question: Do we need to write prototypes for functions?
 - Question: How do we determine the data type of a function?
