@@ -404,8 +404,11 @@ int SyntacticalAnalyzer::literal(){
 	codeGen->num_literal(Lexeme(), _RV); // reporting literal of type numlit
 	token = NextToken();	//Get one additional token
     } else if (rule == 11) {
+	codeGen->action_begin("Object(\"", _RV);
 	token = NextToken();
 	errors += runNonterminal("quoted_lit");
+	codeGen->write("\"");
+	codeGen->action_end(_RV, _NEST);
     }
 
     ending(nonTerminal, token, errors);
@@ -442,14 +445,11 @@ int SyntacticalAnalyzer::quoted_lit() {
 	rule = GetRule(6, token);
     }
     if (rule == 12) {
-	codeGen->action_begin("Object(\"", _RV);
 	_OP_push(" ", false);
 	_RV = false;
 	errors += runNonterminal("any_other_token");
 	_RV = _RV_prev;
-	codeGen->write("\"");
 	_OP_STACK.pop();
-	codeGen->action_end(_RV, _NEST);
     }
     _RV = _RV_prev;
     ending("quoted_lit", token, errors);
@@ -481,14 +481,12 @@ int SyntacticalAnalyzer::more_tokens(){
 	    ending(nonTerminal, token, errors);
 	    return errors;
 	}
-
 	rule = GetRule(7,token);
     }
     if (rule == 13) {
 	errors += runNonterminal("any_other_token");
 	errors += runNonterminal("more_tokens");
     } else if (rule == 14) {
-	//codeGen->write( "\");\n");
         //Do nothing for lambda.
     }
 
@@ -563,7 +561,9 @@ int SyntacticalAnalyzer::else_part(){
 	rule = GetRule(9,token);
     }
     if (rule == 17) {
+	codeGen->if_else_part(); // begin else part
 	errors += runNonterminal("stmt");
+	codeGen->if_else_part_end(); // end else part
 
     } else if (rule == 18) {
         //Do nothing for lambda.
@@ -613,16 +613,17 @@ int SyntacticalAnalyzer::action(){
 	codeGen->if_cond_end(); // end if condition, begin true return statement
 	_RV = true;
 	errors += runNonterminal("stmt");
-	codeGen->if_else_part(); // begin else part
+	codeGen->write("}\n");
 	errors += runNonterminal("else_part");
-	codeGen->if_else_part_end(); // end else part
+
 	_RV = _RV_prev;
 	break;
     case 20:
-	codeGen->action_begin("listop\"" + Lexeme() + "\"", _RV);
+	codeGen->action_begin("listop(\"" + Lexeme() + "\"", _RV);
 	_RV = false;
 	_NEST = true;
 	token = NextToken();
+	codeGen->write(",");
 	errors += runNonterminal("stmt");
 	_RV = _RV_prev;
 	_NEST = _NEST_prev;
@@ -726,7 +727,7 @@ int SyntacticalAnalyzer::action(){
 	_RV = _RV_prev;
 	break;
     case 43:
-	codeGen->action_begin("cout << \"\n\";", false); // no return value i think?
+	codeGen->action_begin("cout << \"\\n\";", false); // no return value i think?
 	token = lex ->GetToken();
 	break;
     }
@@ -748,6 +749,7 @@ int SyntacticalAnalyzer::any_other_token(){
   /* token we want, incrementing the errors until then
     *********************************************************************/
     bool _RV_prev = _RV;
+    bool _NEST_prev = _NEST;
     int errors = 0;
     int rule = GetRule(11, token);
     string nonTerminal = "any_other_token";
@@ -769,19 +771,17 @@ int SyntacticalAnalyzer::any_other_token(){
 	token = NextToken();
     }
     else if (rule == 44) {
+	codeGen->action_begin("(", _RV);
 	token = NextToken();
-	//codeGen->action_begin("Object(\"" + Lexeme(), _RV);
-	_RV = false;
 	errors += runNonterminal("more_tokens");
 	token = NextToken();	//Get one additional lexeme
+	codeGen->action_end(_RV, _NEST);
     } else if (rule >= 45 && rule <= 72) {
-	//codeGen->action_begin(Lexeme(), _RV);
 	if (_OP_ready()) {
 	    codeGen->write(_OP_get());
 	}
-	codeGen->write(Lexeme());
+	codeGen->write(Lexeme() + " ");
 	token = NextToken();	//Get one additional lexeme
-	
     }
     _RV = _RV_prev;
     ending(nonTerminal, token, errors);

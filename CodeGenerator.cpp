@@ -102,7 +102,8 @@ void CodeGenerator::if_cond_end() {
 }
 
 void CodeGenerator::if_else_part() {
-    write("} else {\n");
+    //write("} else {\n");
+    write("else {\n");
 }
 
 void CodeGenerator::if_else_part_end() {
